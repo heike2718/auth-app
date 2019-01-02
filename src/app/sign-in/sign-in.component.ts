@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, AbstractControl, Validators } from '@angular/forms';
+import { emailValidator, passwortValidator, passwortPasswortWiederholtValidator } from '../shared/validation/app.validators';
+import { AppConstants } from '../shared/app.constants';
+import { Logger } from '@nsalaun/ng-logger';
 
 @Component({
   selector: 'auth-sign-in',
@@ -7,9 +11,60 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SignInComponent implements OnInit {
 
-  constructor() { }
+  signInForm: FormGroup;
+
+  agbGelesen: AbstractControl;
+
+  email: AbstractControl;
+
+  // TODO: loginName
+
+  passwort: AbstractControl;
+
+  passwortWdh: AbstractControl;
+
+  kleber: AbstractControl;
+
+  infoPasswortExpanded = false;
+
+  tooltipPasswort: string;
+
+  submitDisabled: true;
+
+
+
+  constructor(private fb: FormBuilder, private logger: Logger) {
+    this.signInForm = fb.group({
+      'agbGelesen': [false, [Validators.requiredTrue]],
+      'email': ['', [Validators.required, emailValidator]],
+      'passwort': ['', [Validators.required, passwortValidator]],
+      'passwortWdh': ['', [Validators.required, passwortValidator]],
+      'kleber': ['']
+    }, { validator: passwortPasswortWiederholtValidator });
+
+    this.agbGelesen = this.signInForm.controls['agbGelesen'];
+    this.email = this.signInForm.controls['email'];
+    this.passwort = this.signInForm.controls['passwort'];
+    this.passwortWdh = this.signInForm.controls['passwortWdh'];
+    this.kleber = this.signInForm['kleber'];
+
+    this.tooltipPasswort = AppConstants.tooltips.PASSWORTREGELN;
+  }
 
   ngOnInit() {
+
+  }
+
+  togglePwdInfo(): void {
+    this.infoPasswortExpanded = !this.infoPasswortExpanded;
+  }
+
+  submitUser(): void {
+    this.logger.debug('about to submit ' + this.signInForm.value);
+  }
+
+  cancel(): void {
+
   }
 
 }
