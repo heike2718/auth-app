@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { SignInComponent } from './sign-in/sign-in.component';
+import { SignInResolver } from './sign-in/sign-in.resolver';
 
 export const routerConfig: Routes = [
     // {
@@ -11,8 +12,11 @@ export const routerConfig: Routes = [
     //     component: LoginComponent
     // },
     {
-        path: 'signin',
-        component: SignInComponent
+        path: 'signin/:clientId',
+        component: SignInComponent,
+        resolve: {
+            detail: SignInResolver
+        }
     },
     // {
     //     path: 'checkliste/configuration/:kuerzel',

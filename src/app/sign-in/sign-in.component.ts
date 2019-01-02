@@ -3,6 +3,9 @@ import { FormBuilder, FormGroup, AbstractControl, Validators } from '@angular/fo
 import { emailValidator, passwortValidator, passwortPasswortWiederholtValidator } from '../shared/validation/app.validators';
 import { AppConstants } from '../shared/app.constants';
 import { Logger } from '@nsalaun/ng-logger';
+import { Observable } from 'rxjs';
+import { AuthenticationRequest } from '../shared/model/authentication-request';
+import { ClientService } from '../services/client.service';
 
 @Component({
   selector: 'auth-sign-in',
@@ -10,6 +13,10 @@ import { Logger } from '@nsalaun/ng-logger';
   styleUrls: ['./sign-in.component.css']
 })
 export class SignInComponent implements OnInit {
+
+  clientInformation$: Observable<AuthenticationRequest>;
+
+  clientId = '';
 
   signInForm: FormGroup;
 
@@ -33,7 +40,7 @@ export class SignInComponent implements OnInit {
 
 
 
-  constructor(private fb: FormBuilder, private logger: Logger) {
+  constructor(private fb: FormBuilder, private clientService: ClientService, private logger: Logger) {
     this.signInForm = fb.group({
       'agbGelesen': [false, [Validators.requiredTrue]],
       'email': ['', [Validators.required, emailValidator]],
@@ -49,6 +56,8 @@ export class SignInComponent implements OnInit {
     this.kleber = this.signInForm['kleber'];
 
     this.tooltipPasswort = AppConstants.tooltips.PASSWORTREGELN;
+
+    this.clientInformation$ = this.clientService.clientInformation$;
   }
 
   ngOnInit() {
