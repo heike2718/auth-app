@@ -1,3 +1,25 @@
-<p>
-  messages works!
-</p>
+<div *ngIf="(info$ | async) as info">
+  <div class="container-fluid">
+    <button class="alert alert-info msg-btn" (click)="closeInfo()">
+      <p>{{info}}</p>
+      <p>(zum Schließen klicken)</p>
+    </button>
+  </div>
+</div>
+<div *ngIf="(warn$ | async) as warn">
+  <div class="container-fluid">
+    <button class="alert alert-warning msg-btn" (click)="closeWarn()">
+      <p>{{warn}}</p>
+      <p>(zum Schließen klicken)</p>
+    </button>
+  </div>
+</div>
+<div *ngIf="(error$ | async) as error">
+  <div class="container-fluid">
+    <button class="alert alert-danger msg-btn" (click)="closeErrors()">
+      <p>{{error}}</p>
+      <p>(zum Schließen klicken)</p>
+    </button>
+  </div>
+</div>
+

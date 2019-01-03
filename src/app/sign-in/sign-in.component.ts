@@ -4,8 +4,10 @@ import { emailValidator, passwortValidator, passwortPasswortWiederholtValidator 
 import { AppConstants } from '../shared/app.constants';
 import { Logger } from '@nsalaun/ng-logger';
 import { Observable } from 'rxjs';
+import { map, publishLast, refCount, filter, shareReplay, tap } from 'rxjs/operators';
 import { AuthenticationRequest } from '../shared/model/authentication-request';
 import { ClientService } from '../services/client.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'auth-sign-in',
@@ -15,8 +17,6 @@ import { ClientService } from '../services/client.service';
 export class SignInComponent implements OnInit {
 
   clientInformation$: Observable<AuthenticationRequest>;
-
-  clientId = '';
 
   signInForm: FormGroup;
 
@@ -40,7 +40,7 @@ export class SignInComponent implements OnInit {
 
 
 
-  constructor(private fb: FormBuilder, private clientService: ClientService, private logger: Logger) {
+  constructor(private fb: FormBuilder, private clientService: ClientService, private logger: Logger, private route: ActivatedRoute) {
     this.signInForm = fb.group({
       'agbGelesen': [false, [Validators.requiredTrue]],
       'email': ['', [Validators.required, emailValidator]],
@@ -57,12 +57,24 @@ export class SignInComponent implements OnInit {
 
     this.tooltipPasswort = AppConstants.tooltips.PASSWORTREGELN;
 
-    this.clientInformation$ = this.clientService.clientInformation$;
   }
 
   ngOnInit() {
+    this.clientInformation$ = this.clientService.clientInformation$;
 
+    let clientId = 'undefined';
+
+    this.route.queryParams.pipe(
+      filter(params => params.clientId)
+    ).subscribe(
+      params => clientId = params.clientId
+    );
+
+    if (clientId !== 'undefined') {
+      this.clientService.getClient(clientId);
+    }
   }
+
 
   togglePwdInfo(): void {
     this.infoPasswortExpanded = !this.infoPasswortExpanded;
@@ -74,6 +86,12 @@ export class SignInComponent implements OnInit {
 
   cancel(): void {
 
+  }
+
+
+
+  loadClient() {
+    this.clientService.getClient('hajkshdqhdhqoi');
   }
 
 }
