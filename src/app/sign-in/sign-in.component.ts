@@ -43,14 +43,10 @@ export class SignInComponent implements OnInit {
 
   showClientId: boolean;
 
-
-
-
-
   constructor(private fb: FormBuilder, private clientService: ClientService, private logger: Logger, private route: ActivatedRoute) {
     this.signInForm = fb.group({
       'agbGelesen': [false, [Validators.requiredTrue]],
-      'loginName': ['', Validators.maxLength(7)],
+      'loginName': ['', Validators.maxLength(255)],
       'email': ['', [Validators.required, emailValidator]],
       'passwort': ['', [Validators.required, passwortValidator]],
       'passwortWdh': ['', [Validators.required, passwortValidator]],
@@ -72,15 +68,19 @@ export class SignInComponent implements OnInit {
     this.clientInformation$ = this.clientService.clientInformation$;
 
     let clientId = 'undefined';
+    let redirectUrl = 'undefined';
 
     this.route.queryParams.pipe(
-      filter(params => params.clientId)
+      filter(params => params.clientId || params.redirectUrl)
     ).subscribe(
-      params => clientId = params.clientId
+      params => {
+        clientId = params.clientId;
+        redirectUrl = params.redirectUrl;
+      }
     );
 
     if (clientId !== 'undefined') {
-      this.clientService.getClient(clientId);
+      this.clientService.getClient(clientId, redirectUrl);
     }
   }
 
@@ -94,11 +94,6 @@ export class SignInComponent implements OnInit {
   }
 
   cancel(): void {
-
+    window.close();
   }
-
-  loadClient() {
-    this.clientService.getClient('hajkshdqhdhqoi');
-  }
-
 }

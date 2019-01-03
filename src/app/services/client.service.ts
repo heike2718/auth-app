@@ -23,9 +23,9 @@ export class ClientService {
 
   constructor(private http: Http, private logger: Logger) { }
 
-  getClient(clientId: string): Observable<ClientInformation> {
+  getClient(clientId: string, redirectUrl: string): Observable<ClientInformation> {
 
-    const url = environment.apiUrl + '/clients/' + clientId;
+    const url = environment.apiUrl + '/clients/?clientId=' + clientId + '&redirectUrl=' + redirectUrl;
 
     const obs$ = this.http.get(url).pipe(
       publishLast(),
