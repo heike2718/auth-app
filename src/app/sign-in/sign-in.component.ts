@@ -5,9 +5,10 @@ import { AppConstants } from '../shared/app.constants';
 import { Logger } from '@nsalaun/ng-logger';
 import { Observable } from 'rxjs';
 import { map, publishLast, refCount, filter, shareReplay, tap } from 'rxjs/operators';
-import { AuthenticationRequest } from '../shared/model/authentication-request';
+import { ClientInformation } from '../shared/model/client-information';
 import { ClientService } from '../services/client.service';
 import { ActivatedRoute } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'auth-sign-in',
@@ -16,11 +17,13 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class SignInComponent implements OnInit {
 
-  clientInformation$: Observable<AuthenticationRequest>;
+  clientInformation$: Observable<ClientInformation>;
 
   signInForm: FormGroup;
 
   agbGelesen: AbstractControl;
+
+  loginName: AbstractControl;
 
   email: AbstractControl;
 
@@ -38,11 +41,16 @@ export class SignInComponent implements OnInit {
 
   submitDisabled: true;
 
+  showClientId: boolean;
+
+
+
 
 
   constructor(private fb: FormBuilder, private clientService: ClientService, private logger: Logger, private route: ActivatedRoute) {
     this.signInForm = fb.group({
       'agbGelesen': [false, [Validators.requiredTrue]],
+      'loginName': ['', Validators.maxLength(7)],
       'email': ['', [Validators.required, emailValidator]],
       'passwort': ['', [Validators.required, passwortValidator]],
       'passwortWdh': ['', [Validators.required, passwortValidator]],
@@ -50,13 +58,14 @@ export class SignInComponent implements OnInit {
     }, { validator: passwortPasswortWiederholtValidator });
 
     this.agbGelesen = this.signInForm.controls['agbGelesen'];
+    this.loginName = this.signInForm.controls['loginName'];
     this.email = this.signInForm.controls['email'];
     this.passwort = this.signInForm.controls['passwort'];
     this.passwortWdh = this.signInForm.controls['passwortWdh'];
     this.kleber = this.signInForm['kleber'];
 
     this.tooltipPasswort = AppConstants.tooltips.PASSWORTREGELN;
-
+    this.showClientId = !environment.production;
   }
 
   ngOnInit() {
@@ -87,8 +96,6 @@ export class SignInComponent implements OnInit {
   cancel(): void {
 
   }
-
-
 
   loadClient() {
     this.clientService.getClient('hajkshdqhdhqoi');

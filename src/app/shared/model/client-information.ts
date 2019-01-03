@@ -1,6 +1,5 @@
-export interface AuthenticationRequest {
+export interface ClientInformation {
     clientId: string;
-    redirectUri: string;
     agbUrl: string;
     loginnameSupported: boolean;
 }

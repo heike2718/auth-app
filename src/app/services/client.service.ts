@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { map, publishLast, refCount, filter, shareReplay, tap } from 'rxjs/operators';
-import { AuthenticationRequest } from '../shared/model/authentication-request';
+import { ClientInformation } from '../shared/model/client-information';
 import { Logger } from '@nsalaun/ng-logger';
 import { environment } from '../../environments/environment';
 
@@ -11,18 +11,19 @@ import { environment } from '../../environments/environment';
 })
 export class ClientService {
 
-  private subject: BehaviorSubject<AuthenticationRequest> = new BehaviorSubject<AuthenticationRequest>({
+  private subject: BehaviorSubject<ClientInformation> = new BehaviorSubject<ClientInformation>({
     clientId: 'unbekannt',
     agbUrl: '',
-    loginnameSupported: true,
-    redirectUri: ''
+    loginnameSupported: true
   });
 
-  clientInformation$: Observable<AuthenticationRequest> = this.subject.asObservable();
+  clientInformation$: Observable<ClientInformation> = this.subject.asObservable().pipe(
+    filter(client => client.clientId !== 'unbekannt')
+  );
 
   constructor(private http: Http, private logger: Logger) { }
 
-  getClient(clientId: string): Observable<AuthenticationRequest> {
+  getClient(clientId: string): Observable<ClientInformation> {
 
     const url = environment.apiUrl + '/clients/' + clientId;
 
