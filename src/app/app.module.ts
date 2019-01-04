@@ -10,6 +10,9 @@ import { routerConfig } from './router.config';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { MessagesComponent } from './messages/messages.component';
 import { FormErrorComponent } from './shared/components/form-error/form-error.component';
+import { ModalComponent } from './shared/components/modal/modal.component';
+import { ModalOpenOnClickDirective } from './shared/components/modal/modal-open-on-click.directive';
+
 
 import { NgLoggerModule, Level } from '@nsalaun/ng-logger';
 import { environment } from '../environments/environment';
@@ -27,7 +30,9 @@ if (!environment.production) {
     AppComponent,
     SignInComponent,
     MessagesComponent,
-    FormErrorComponent
+    FormErrorComponent,
+    ModalComponent,
+    ModalOpenOnClickDirective
   ],
   imports: [
     BrowserModule,

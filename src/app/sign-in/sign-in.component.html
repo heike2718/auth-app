@@ -2,9 +2,7 @@
   <div class="col-sm-12 col-md-9 h3">Benutzerkonto anlegen</div>
 </div>
 
-
 <div *ngIf="clientInformation$ | async as clientInfo else loadingIdicator">
-
 
   <p *ngIf="showClientId">clientID: {{clientInfo.clientId}}</p>
 
@@ -100,7 +98,7 @@
         </button>
       </div>
       <div class="col-md-2 btn-wrapper">
-        <button class="col-md-12 btn btn-primary" (click)="cancel()">
+        <button #cancelButton class="col-md-12 btn btn-primary">
           abbrechen
         </button>
       </div>

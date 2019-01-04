@@ -1,43 +1,31 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { map, publishLast, refCount, filter, shareReplay, tap } from 'rxjs/operators';
-import { ClientInformation } from '../shared/model/client-information';
+import { map, publishLast, refCount, tap } from 'rxjs/operators';
+import { AuthErrorService } from './auth-error.service';
 import { Logger } from '@nsalaun/ng-logger';
 import { environment } from '../../environments/environment';
+import { AppData } from '../shared/app-data.service';
+import { ClientCredentials, createQueryParameters } from '../shared/model/client-information';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClientService {
 
-  private subject: BehaviorSubject<ClientInformation> = new BehaviorSubject<ClientInformation>({
-    clientId: 'unbekannt',
-    agbUrl: '',
-    loginnameSupported: true
-  });
+  constructor(private http: Http, private authErrorService: AuthErrorService, private logger: Logger, private appData: AppData) { }
 
-  clientInformation$: Observable<ClientInformation> = this.subject.asObservable().pipe(
-    filter(client => client.clientId !== 'unbekannt')
-  );
+  getClient(clientCredentials: ClientCredentials): void {
 
-  constructor(private http: Http, private logger: Logger) { }
+    const url = environment.apiUrl + '/clients' + createQueryParameters(clientCredentials);
 
-  getClient(clientId: string, redirectUrl: string): Observable<ClientInformation> {
-
-    const url = environment.apiUrl + '/clients/?clientId=' + clientId + '&redirectUrl=' + redirectUrl;
-
-    const obs$ = this.http.get(url).pipe(
+    this.http.get(url).pipe(
       publishLast(),
       refCount(),
       map(res => res.json()),
-      tap( client => this.logger.debug('clientId=' + client.clientId))
+      tap(client => this.logger.debug('clientId=' + client.clientId))
+    ).subscribe(
+      client => this.appData.updateClientInformation(client),
+      error => this.authErrorService.handleError(error, 'registerUser')
     );
-
-    obs$.subscribe(
-      client => this.subject.next(client)
-    );
-
-    return obs$;
   }
 }
