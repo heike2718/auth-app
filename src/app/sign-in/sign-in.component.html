@@ -6,7 +6,7 @@
 
   <p *ngIf="showClientId">clientID: {{clientInfo.clientId}}</p>
 
-  <form novalidate [formGroup]="signInForm" (ngSubmit)="submitUser()">
+  <form novalidate [formGroup]="signInForm">
 
     <div class="form-check">
       <div class="row">
