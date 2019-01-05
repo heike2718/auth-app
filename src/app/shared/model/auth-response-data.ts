@@ -16,7 +16,7 @@ export function createHash(data: SignInLogInResponseData): string {
     return '#accessToken=' + data.accessToken
         + '&expiresIn=' + data.expiresIn
         + '&tokenType=' + data.tokenType
-        + 'state=' + data.state
+        + '&state=' + data.state
         + '&idToken=' + data.idToken;
 }
 

@@ -8,5 +8,10 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 Run `ng serve --port 4300` for a dev server. Navigate to `http://localhost:4300/`. The app will automatically reload if you change any of the source files.
 
+## Devtest- URL (Abkürzung)
+
+http://localhost:4300/signin?clientId=WLJLH4vsldWapZrMZi2U5HKRBVpgyUiRTWwX7aiJd8nX&redirectUrl=http:%2F%2Flocalhost:4200
+
 ## Notizen (chronologisch absteigend)
+* __Dialog programmatisch auslösen (zum Test noch mit Button):__ commit d0a4d0df145cae1954976e5833e593f97728ae68
 * __POC Aufruf SignInComponent aus checklistenapp:__ commit 411d90cc4fd8e62f1380d70752679c2307d37b44

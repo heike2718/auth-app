@@ -95,7 +95,10 @@ export class SignInComponent implements OnInit {
     this.redirectUrl$.pipe(
       filter(str => str.length > 0)
     ).subscribe(
-      _str => this.openModal()
+      str => {
+        this.redirectUrl = str;
+        this.openModal();
+      }
     );
   }
 
@@ -122,6 +125,12 @@ export class SignInComponent implements OnInit {
     }
   }
 
+  onClickOpenModal() {
+    // tslint:disable-next-line:max-line-length
+    this.redirectUrl = 'http://localhost:4200#accessToken=tAnBwn9ii3TK&expiresIn=0&tokenType=Bearer&state=signin&idToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiI4OGU1NzNmMC03ODZhLTRiNDAtYTE0ZS1kZTMwYWFjM2I0NmQiLCJpc3MiOiJoZWlrZTI3MTgvYXV0aHByb3ZpZGVyIiwiZXhwIjoxNTQ2NjgyMTMyLCJpYXQiOjE1NDY2ODIxMzJ9.ATLalBOmYJG8fk2DSCfrhU2ss8Ah7nlWZway0G72lz7mfVTbpRfapj-a6rDimWh3pXuSQClIdodLcROg1PaxCal3-l_dHBsxwvhf2VGo7pmAN4cXdxKlI9jATEvRK-_nQaNVt-AxwYdM5Szkqo8HlBWMWZysjuVu_WYGXFv0IXMGkEWcMidKm4VgtTXBmFIiB7_y0l-DeTbAHORBStKkYrfwFUoNrBsARLZ54H4Ty4MUjXhZw829IzxO4cPtnUvwJBi7ZD06n7r2--C6V7acBQy50i6qa7_57W0ungDiPhMZIdO0K2f2-mN63_fvhjoWzQM320--pfUfswE69PSqew';
+    this.openModal();
+  }
+
   openModal(): void {
     this.showDialog = true;
     this.modalService.open();
@@ -146,6 +155,7 @@ export class SignInComponent implements OnInit {
 
   closeModalAndSendRedirect() {
     this.modalService.close();
+    this.logger.debug('about to redirect to: ' + this.redirectUrl);
     window.location.href = this.redirectUrl;
   }
 
