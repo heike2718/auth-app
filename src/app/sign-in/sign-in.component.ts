@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, AbstractControl, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, AbstractControl, Validators, FormControl } from '@angular/forms';
 import { emailValidator, passwortValidator, passwortPasswortWiederholtValidator } from '../shared/validation/app.validators';
 import { AppConstants } from '../shared/app.constants';
 import { Logger } from '@nsalaun/ng-logger';
@@ -14,6 +14,7 @@ import { SignInLogInResponseData } from '../shared/model/auth-response-data';
 import { AppData } from '../shared/app-data.service';
 import { RegistrationCredentials } from '../shared/model/registration-credentials';
 import { ModalService } from '../shared/components/modal/modal.service';
+import { MessagesService } from '../services/messages.service';
 
 @Component({
   selector: 'auth-sign-in',
@@ -62,12 +63,12 @@ export class SignInComponent implements OnInit {
     private userService: UserService,
     private appData: AppData,
     private modalService: ModalService,
+    private messagesService: MessagesService,
     private logger: Logger,
     private route: ActivatedRoute) {
 
-    this.signInForm = fb.group({
+    this.signInForm = this.fb.group({
       'agbGelesen': [false, [Validators.requiredTrue]],
-      'loginName': ['', Validators.maxLength(255)],
       'email': ['', [Validators.required, emailValidator]],
       'passwort': ['', [Validators.required, passwortValidator]],
       'passwortWdh': ['', [Validators.required, passwortValidator]],
@@ -75,7 +76,6 @@ export class SignInComponent implements OnInit {
     }, { validator: passwortPasswortWiederholtValidator });
 
     this.agbGelesen = this.signInForm.controls['agbGelesen'];
-    this.loginName = this.signInForm.controls['loginName'];
     this.email = this.signInForm.controls['email'];
     this.passwort = this.signInForm.controls['passwort'];
     this.passwortWdh = this.signInForm.controls['passwortWdh'];
@@ -98,6 +98,17 @@ export class SignInComponent implements OnInit {
       str => {
         this.redirectUrl = str;
         this.openModal();
+      }
+    );
+
+    this.clientInformation$.subscribe(
+      info => {
+        if (info.loginnameSupported)  {
+          this.signInForm.addControl(
+            'loginName', new FormControl('', [Validators.required, Validators.maxLength(255)])
+          );
+          this.loginName = this.signInForm.controls['loginName'];
+        }
       }
     );
   }
@@ -138,6 +149,8 @@ export class SignInComponent implements OnInit {
 
   submitUser(): void {
     this.logger.debug('about to submit ' + this.signInForm.value);
+
+    this.messagesService.clearMessages();
 
     const registrationCredentials: RegistrationCredentials = {
       agbGelesen: this.agbGelesen.value,
