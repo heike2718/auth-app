@@ -52,6 +52,8 @@ export class SignInComponent implements OnInit {
 
   showClientId: boolean;
 
+  showDialog: boolean;
+
   private redirectUrl = '';
 
 
@@ -84,16 +86,17 @@ export class SignInComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.showDialog = false;
     this.clientInformation$ = this.appData.clientInformation$;
     this.redirectUrl$ = this.appData.redirectUrl$;
 
     this.loadClientInformation();
 
-    // this.redirectUrl$.pipe(
-    //   filter(str => str.length > 0)
-    // ).subscribe(
-    //   _str => this.openModal()
-    // );
+    this.redirectUrl$.pipe(
+      filter(str => str.length > 0)
+    ).subscribe(
+      _str => this.openModal()
+    );
   }
 
   private loadClientInformation() {
@@ -119,13 +122,9 @@ export class SignInComponent implements OnInit {
     }
   }
 
-  private openModal(): void {
+  openModal(): void {
+    this.showDialog = true;
     this.modalService.open();
-  }
-
-
-  togglePwdInfo(): void {
-    this.infoPasswortExpanded = !this.infoPasswortExpanded;
   }
 
   submitUser(): void {

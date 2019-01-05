@@ -46,7 +46,7 @@ export class ModalOpenOnClickDirective implements OnInit, OnDestroy {
       this.elements = [els];
     }
 
-    // nicht this.clickHandlet()!!! da der handler sonst sofort ausgeführt wird und die reference anschließend undefined ist.
+    // nicht this.clickHandler()!!! da der handler sonst sofort ausgeführt wird und die reference anschließend undefined ist.
     this.elements.forEach(el => el.addEventListener('click', this.clickHandler));
   }
 }

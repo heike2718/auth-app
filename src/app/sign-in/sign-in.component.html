@@ -1,8 +1,47 @@
+<!-- Falls die authModalOpenOnClick-Direktive verwendet wird, Dialog zum Anzeigen des SignIn-Erfolgs inside *ngIf, weil sie sonst keine Elemente bekommt -->
+<div *ngIf="showDialog">
+  <ng-template #successDialogBody>
+    <div class="container-fluid">
+      <div class="card">
+        <div class="card-header">
+          <h4>Benutzerkonto angelegt</h4>
+        </div>
+        <div class="card-body">
+          Das Benutzerkonto wurde erfolgreich angelegt. Eine Mail mit einem Aktivierungslink wurde an Ihre Mailadresse gesendet. Bitte
+          schauen Sie in Ihrem Postfach nach, um Ihr Benutzerkonto zu aktivieren.
+        </div>
+        <div class="card-footer">
+          <div class="row btn-container">
+            <div class="col-md-12 btn-wrapper">
+              <div class="col-md-12 btn btn-outline-dark" (click)="closeModalAndSendRedirect()">
+                OK
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <auth-modal #modal [hideOnEscape]="false" [hideOnClickOutside]="true" [body]="successDialogBody">
+    <!-- === kein close-icon, da unbedingt redirect ausgelöst werden muss -->
+    <!--<i class="fa fa-times" (click)="modal.close()"></i>-->
+  </auth-modal>
+</div>
+
+
 <div class="row">
   <div class="col-sm-12 col-md-9 h3">Benutzerkonto anlegen</div>
 </div>
 
+<div class="col-md-2 btn-wrapper">
+        <button  class="col-md-12 btn btn-primary" (click)="openModal()" >
+          Dialog
+        </button>
+      </div>
+
 <div *ngIf="clientInformation$ | async as clientInfo else loadingIdicator">
+
 
   <p *ngIf="showClientId">clientID: {{clientInfo.clientId}}</p>
 
@@ -98,7 +137,7 @@
         </button>
       </div>
       <div class="col-md-2 btn-wrapper">
-        <button #cancelButton class="col-md-12 btn btn-primary">
+        <button class="col-md-12 btn btn-primary">
           abbrechen
         </button>
       </div>
