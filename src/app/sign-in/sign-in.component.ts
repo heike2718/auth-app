@@ -14,7 +14,7 @@ import { SignInLogInResponseData } from '../shared/model/auth-response-data';
 import { AppData } from '../shared/app-data.service';
 import { RegistrationCredentials } from '../shared/model/registration-credentials';
 import { ModalService } from '../shared/components/modal/modal.service';
-import { MessagesService } from '../services/messages.service';
+import { MessagesService } from 'hewi-ng-lib';
 
 @Component({
   selector: 'auth-sign-in',
@@ -150,7 +150,7 @@ export class SignInComponent implements OnInit {
   submitUser(): void {
     this.logger.debug('about to submit ' + this.signInForm.value);
 
-    this.messagesService.clearMessages();
+    this.messagesService.clear();
 
     const registrationCredentials: RegistrationCredentials = {
       agbGelesen: this.agbGelesen.value,

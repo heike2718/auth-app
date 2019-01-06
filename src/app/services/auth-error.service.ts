@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Logger } from '@nsalaun/ng-logger';
-import { MessagesService } from './messages.service';
-import { Message, WARN, ERROR, ResponsePayload } from '../shared/model/message';
+import { MessagesService, Message, WARN, ERROR } from 'hewi-ng-lib';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
