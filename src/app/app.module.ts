@@ -8,6 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { routerConfig } from './router.config';
 import { SignInComponent } from './sign-in/sign-in.component';
+import { SignUpComponent } from './sign-up/sign-up.component';
 import { FormErrorComponent } from './shared/components/form-error/form-error.component';
 import { ModalComponent } from './shared/components/modal/modal.component';
 import { ModalOpenOnClickDirective } from './shared/components/modal/modal-open-on-click.directive';
@@ -31,7 +32,8 @@ if (!environment.production) {
     SignInComponent,
     FormErrorComponent,
     ModalComponent,
-    ModalOpenOnClickDirective
+    ModalOpenOnClickDirective,
+    SignUpComponent
   ],
   imports: [
     BrowserModule,

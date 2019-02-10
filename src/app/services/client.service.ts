@@ -7,6 +7,7 @@ import { environment } from '../../environments/environment';
 import { AppData } from '../shared/app-data.service';
 import { ClientCredentials, createQueryParameters } from '../shared/model/client-information';
 
+/** ClientService holt die Daten zum Client */
 @Injectable({
   providedIn: 'root'
 })

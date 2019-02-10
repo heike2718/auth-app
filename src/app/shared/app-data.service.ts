@@ -41,6 +41,7 @@ export class AppData {
   }
 
   updateRedirectUrl(redirectUrl: string) {
+    console.log(redirectUrl);
     this.redirectUrlSubject.next(redirectUrl);
   }
 }
