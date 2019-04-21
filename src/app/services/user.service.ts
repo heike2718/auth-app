@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { RegistrationCredentials } from '../shared/model/registration-credentials';
 import { AuthErrorService } from './auth-error.service';
 import { environment } from '../../environments/environment';
 import { createHash } from '../shared/model/auth-response-data';
-import { map, publishLast, refCount, share, finalize, first, tap } from 'rxjs/operators';
+import { map, publishLast, refCount, tap } from 'rxjs/operators';
 import { ResponsePayload } from 'hewi-ng-lib';
 import { AppData } from '../shared/app-data.service';
 import { Logger } from '@nsalaun/ng-logger';
@@ -14,7 +14,7 @@ import { Logger } from '@nsalaun/ng-logger';
 })
 export class UserService {
 
-  constructor(private http: Http, private authErrorService: AuthErrorService, private appData: AppData, private logger: Logger) {}
+  constructor(private http: HttpClient, private authErrorService: AuthErrorService, private appData: AppData, private logger: Logger) {}
 
   public registerUser(registrationCredentials: RegistrationCredentials): void {
 
@@ -27,7 +27,7 @@ export class UserService {
     const redirectUrl = registrationCredentials.clientCredentials.redirectUrl;
 
     this.http.post(url, registrationCredentials).pipe(
-      map(res => <ResponsePayload>res.json()),
+      map(res => <ResponsePayload> res ),
       publishLast(),
       refCount(),
       tap(

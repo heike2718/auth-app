@@ -7,7 +7,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { routerConfig } from './router.config';
-import { SignInComponent } from './sign-in/sign-in.component';
+import { LogInComponent } from './log-in/log-in.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { FormErrorComponent } from './shared/components/form-error/form-error.component';
 import { ModalComponent } from './shared/components/modal/modal.component';
@@ -29,11 +29,11 @@ if (!environment.production) {
 @NgModule({
   declarations: [
     AppComponent,
-    SignInComponent,
     FormErrorComponent,
     ModalComponent,
     ModalOpenOnClickDirective,
-    SignUpComponent
+    SignUpComponent,
+    LogInComponent
   ],
   imports: [
     BrowserModule,

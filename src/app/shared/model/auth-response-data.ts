@@ -3,7 +3,7 @@ export interface User {
     email: string;
 }
 
-export interface SignInLogInResponseData {
+export interface SignUpLogInResponseData {
     accessToken: string;
     expiresIn: number;
     tokenType: string;
@@ -12,7 +12,7 @@ export interface SignInLogInResponseData {
 }
 
 
-export function createHash(data: SignInLogInResponseData): string {
+export function createHash(data: SignUpLogInResponseData): string {
     return '#accessToken=' + data.accessToken
         + '&expiresIn=' + data.expiresIn
         + '&tokenType=' + data.tokenType

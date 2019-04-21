@@ -10,7 +10,7 @@ import { ClientService } from '../services/client.service';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { UserService } from '../services/user.service';
-import { SignInLogInResponseData } from '../shared/model/auth-response-data';
+import { SignUpLogInResponseData } from '../shared/model/auth-response-data';
 import { AppData } from '../shared/app-data.service';
 import { RegistrationCredentials } from '../shared/model/registration-credentials';
 import { ModalService } from '../shared/components/modal/modal.service';
@@ -29,7 +29,7 @@ export class SignUpComponent implements OnInit {
 
   private clientCredentials: ClientCredentials;
 
-  signInForm: FormGroup;
+  signUpForm: FormGroup;
 
   agbGelesen: AbstractControl;
 
@@ -67,7 +67,7 @@ export class SignUpComponent implements OnInit {
     private logger: Logger,
     private route: ActivatedRoute) {
 
-    this.signInForm = this.fb.group({
+    this.signUpForm = this.fb.group({
       'agbGelesen': [false, [Validators.requiredTrue]],
       'email': ['', [Validators.required, emailValidator]],
       'passwort': ['', [Validators.required, passwortValidator]],
@@ -75,11 +75,11 @@ export class SignUpComponent implements OnInit {
       'kleber': ['']
     }, { validator: passwortPasswortWiederholtValidator });
 
-    this.agbGelesen = this.signInForm.controls['agbGelesen'];
-    this.email = this.signInForm.controls['email'];
-    this.passwort = this.signInForm.controls['passwort'];
-    this.passwortWdh = this.signInForm.controls['passwortWdh'];
-    this.kleber = this.signInForm['kleber'];
+    this.agbGelesen = this.signUpForm.controls['agbGelesen'];
+    this.email = this.signUpForm.controls['email'];
+    this.passwort = this.signUpForm.controls['passwort'];
+    this.passwortWdh = this.signUpForm.controls['passwortWdh'];
+    this.kleber = this.signUpForm['kleber'];
 
     this.tooltipPasswort = AppConstants.tooltips.PASSWORTREGELN;
     this.showClientId = !environment.production;
@@ -103,11 +103,11 @@ export class SignUpComponent implements OnInit {
 
     this.clientInformation$.subscribe(
       info => {
-        if (info.loginnameSupported)  {
-          this.signInForm.addControl(
+        if (info.loginnameSupported) {
+          this.signUpForm.addControl(
             'loginName', new FormControl('', [Validators.required, Validators.maxLength(255)])
           );
-          this.loginName = this.signInForm.controls['loginName'];
+          this.loginName = this.signUpForm.controls['loginName'];
         }
       }
     );
@@ -136,6 +136,9 @@ export class SignUpComponent implements OnInit {
     }
   }
 
+  /**
+   * Gibt im Moment einfach einen festen String zurück, ohne das Backend zu bemühen.
+   */
   onClickOpenModal() {
     // tslint:disable-next-line:max-line-length
     this.redirectUrl = 'http://localhost:4200/#accessToken=tAnBwn9ii3TK&expiresIn=0&tokenType=Bearer&state=signup&idToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiI4OGU1NzNmMC03ODZhLTRiNDAtYTE0ZS1kZTMwYWFjM2I0NmQiLCJpc3MiOiJoZWlrZTI3MTgvYXV0aHByb3ZpZGVyIiwiZXhwIjoxNTQ2NjgyMTMyLCJpYXQiOjE1NDY2ODIxMzJ9.ATLalBOmYJG8fk2DSCfrhU2ss8Ah7nlWZway0G72lz7mfVTbpRfapj-a6rDimWh3pXuSQClIdodLcROg1PaxCal3-l_dHBsxwvhf2VGo7pmAN4cXdxKlI9jATEvRK-_nQaNVt-AxwYdM5Szkqo8HlBWMWZysjuVu_WYGXFv0IXMGkEWcMidKm4VgtTXBmFIiB7_y0l-DeTbAHORBStKkYrfwFUoNrBsARLZ54H4Ty4MUjXhZw829IzxO4cPtnUvwJBi7ZD06n7r2--C6V7acBQy50i6qa7_57W0ungDiPhMZIdO0K2f2-mN63_fvhjoWzQM320--pfUfswE69PSqew';
@@ -148,7 +151,7 @@ export class SignUpComponent implements OnInit {
   }
 
   submitUser(): void {
-    this.logger.debug('about to submit ' + this.signInForm.value);
+    this.logger.debug('about to submit ' + this.signUpForm.value);
 
     this.messagesService.clear();
 
