@@ -5,7 +5,7 @@ export interface User {
 
 export interface SignUpLogInResponseData {
     accessToken: string;
-    expiresIn: number;
+    expiresAt: number;
     tokenType: string;
     state: string;
     idToken: string;
@@ -14,7 +14,7 @@ export interface SignUpLogInResponseData {
 
 export function createHash(data: SignUpLogInResponseData): string {
     return '#accessToken=' + data.accessToken
-        + '&expiresIn=' + data.expiresIn
+        + '&expiresAt=' + data.expiresAt
         + '&tokenType=' + data.tokenType
         + '&state=' + data.state
         + '&idToken=' + data.idToken;
