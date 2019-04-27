@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { map, publishLast, refCount, tap } from 'rxjs/operators';
 import { AuthErrorService } from './auth-error.service';
 import { Logger } from '@nsalaun/ng-logger';
@@ -13,7 +13,7 @@ import { ClientCredentials, createQueryParameters } from '../shared/model/client
 })
 export class ClientService {
 
-  constructor(private http: Http, private authErrorService: AuthErrorService, private logger: Logger, private appData: AppData) { }
+  constructor(private http: HttpClient, private authErrorService: AuthErrorService, private logger: Logger, private appData: AppData) { }
 
   getClient(clientCredentials: ClientCredentials): void {
 

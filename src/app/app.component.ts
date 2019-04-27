@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from '../environments/environment';
+import { Logger } from '@nsalaun/ng-logger';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -13,7 +14,12 @@ export class AppComponent implements OnInit {
   showEnv = !environment.production;
   api = environment.apiUrl;
 
-  constructor() {}
+  constructor(private logger: Logger) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    const location = window.location;
+    const hash = window.location.hash;
+    this.logger.debug('location=' + location);
+    this.logger.debug('hash=' + hash);
+  }
 }
