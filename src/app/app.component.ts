@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     const location = window.location;
-    const hash = window.location.hash;
+    const hash = window.location.href
     this.logger.debug('location=' + location);
     this.logger.debug('hash=' + hash);
   }

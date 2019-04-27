@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { AuthErrorService } from './auth-error.service';
+import { HttpErrorService } from './http-error.service';
 
-describe('AuthErrorService', () => {
+describe('HttpErrorService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AuthErrorService = TestBed.get(AuthErrorService);
+    const service: HttpErrorService = TestBed.get(HttpErrorService);
     expect(service).toBeTruthy();
   });
 });

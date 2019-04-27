@@ -1,12 +1,15 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ErrorComponent } from './error/error.component';
 import { routerConfig } from './router.config';
+import { GlobalErrorHandler } from './error/global-error-handler.service';
 import { LogInComponent } from './log-in/log-in.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { FormErrorComponent } from './shared/components/form-error/form-error.component';
@@ -17,7 +20,6 @@ import { HewiNgLibModule } from 'hewi-ng-lib';
 
 import { NgLoggerModule, Level } from '@nsalaun/ng-logger';
 import { environment } from '../environments/environment';
-import { HttpClientModule } from '@angular/common/http';
 
 // Set different log level depending on environment.
 let LOG_LEVEL = Level.ERROR;
@@ -33,7 +35,8 @@ if (!environment.production) {
     ModalComponent,
     ModalOpenOnClickDirective,
     SignUpComponent,
-    LogInComponent
+    LogInComponent,
+    ErrorComponent
   ],
   imports: [
     BrowserModule,
@@ -46,7 +49,10 @@ if (!environment.production) {
     HewiNgLibModule,
     NgLoggerModule.forRoot(LOG_LEVEL),
   ],
-  providers: [],
+  providers: [
+    GlobalErrorHandler,
+    {provide: ErrorHandler, useClass: GlobalErrorHandler}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
