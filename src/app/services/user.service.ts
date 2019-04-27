@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { RegistrationCredentials } from '../shared/model/registration-credentials';
-import { AuthErrorService } from './auth-error.service';
+import { HttpErrorService } from '../error/http-error.service';
 import { environment } from '../../environments/environment';
 import { createHash } from '../shared/model/auth-response-data';
 import { map, publishLast, refCount, tap } from 'rxjs/operators';
@@ -14,7 +14,7 @@ import { Logger } from '@nsalaun/ng-logger';
 })
 export class UserService {
 
-  constructor(private http: HttpClient, private authErrorService: AuthErrorService, private appData: AppData, private logger: Logger) {}
+  constructor(private http: HttpClient, private httpErrorService: HttpErrorService, private appData: AppData, private logger: Logger) {}
 
   public registerUser(registrationCredentials: RegistrationCredentials): void {
 
@@ -37,7 +37,7 @@ export class UserService {
       payload => {
         this.appData.updateRedirectUrl(redirectUrl + createHash(payload.data));
       },
-      error => this.authErrorService.handleError(error, 'registerUser'),
+      error => this.httpErrorService.handleError(error, 'registerUser'),
       () => this.logger.debug('post call completed')
     );
   }

@@ -4,13 +4,12 @@ import { emailValidator, passwortValidator, passwortPasswortWiederholtValidator 
 import { AppConstants } from '../shared/app.constants';
 import { Logger } from '@nsalaun/ng-logger';
 import { Observable } from 'rxjs';
-import { map, publishLast, refCount, filter, shareReplay, tap } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 import { ClientInformation, ClientCredentials } from '../shared/model/client-information';
 import { ClientService } from '../services/client.service';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { UserService } from '../services/user.service';
-import { SignUpLogInResponseData } from '../shared/model/auth-response-data';
 import { AppData } from '../shared/app-data.service';
 import { RegistrationCredentials } from '../shared/model/registration-credentials';
 import { ModalService } from '../shared/components/modal/modal.service';

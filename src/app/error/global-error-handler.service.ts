@@ -18,7 +18,7 @@ export class GlobalErrorHandler implements ErrorHandler  {
     logger.debug(JSON.stringify(error));
 
     if (error instanceof HttpErrorResponse) {
-      logger.debug('das sollte nicht vorkommen, da diese Errors vom ErrorInterceptr behandelt werden');
+      logger.debug('das sollte nicht vorkommen, da diese Errors vom HttpErrorService behandelt werden');
     } else {
       logger.error('Unerwarteter Fehler: ' + error.message);
     }
