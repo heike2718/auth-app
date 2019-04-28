@@ -12,7 +12,7 @@ import { environment } from '../../environments/environment';
 import { UserService } from '../services/user.service';
 import { AppData } from '../shared/app-data.service';
 import { RegistrationCredentials } from '../shared/model/registration-credentials';
-import { MessagesService, ModalService } from 'hewi-ng-lib';
+import { MessagesService } from 'hewi-ng-lib';
 
 @Component({
   selector: 'auth-sign-up',
@@ -51,8 +51,6 @@ export class SignUpComponent implements OnInit {
 
   showClientId: boolean;
 
-  showDialog: boolean;
-
   private redirectUrl = '';
 
 
@@ -60,7 +58,6 @@ export class SignUpComponent implements OnInit {
     private clientService: ClientService,
     private userService: UserService,
     private appData: AppData,
-    private modalService: ModalService,
     private messagesService: MessagesService,
     private logger: Logger,
     private route: ActivatedRoute) {
@@ -84,7 +81,6 @@ export class SignUpComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.showDialog = false;
     this.clientInformation$ = this.appData.clientInformation$;
     this.redirectUrl$ = this.appData.redirectUrl$;
 
@@ -95,7 +91,7 @@ export class SignUpComponent implements OnInit {
     ).subscribe(
       str => {
         this.redirectUrl = str;
-        this.openModal();
+        this.sendRedirect();
       }
     );
 
@@ -134,20 +130,6 @@ export class SignUpComponent implements OnInit {
     }
   }
 
-  /**
-   * Gibt im Moment einfach einen festen String zurück, ohne das Backend zu bemühen.
-   */
-  onClickOpenModal() {
-    // tslint:disable-next-line:max-line-length
-    this.redirectUrl = 'http://localhost:4200/#accessToken=tAnBwn9ii3TK&expiresAt=1555935058&tokenType=Bearer&state=signup&idToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiI4OGU1NzNmMC03ODZhLTRiNDAtYTE0ZS1kZTMwYWFjM2I0NmQiLCJpc3MiOiJoZWlrZTI3MTgvYXV0aHByb3ZpZGVyIiwiZXhwIjoxNTQ2NjgyMTMyLCJpYXQiOjE1NDY2ODIxMzJ9.ATLalBOmYJG8fk2DSCfrhU2ss8Ah7nlWZway0G72lz7mfVTbpRfapj-a6rDimWh3pXuSQClIdodLcROg1PaxCal3-l_dHBsxwvhf2VGo7pmAN4cXdxKlI9jATEvRK-_nQaNVt-AxwYdM5Szkqo8HlBWMWZysjuVu_WYGXFv0IXMGkEWcMidKm4VgtTXBmFIiB7_y0l-DeTbAHORBStKkYrfwFUoNrBsARLZ54H4Ty4MUjXhZw829IzxO4cPtnUvwJBi7ZD06n7r2--C6V7acBQy50i6qa7_57W0ungDiPhMZIdO0K2f2-mN63_fvhjoWzQM320--pfUfswE69PSqew';
-    this.openModal();
-  }
-
-  openModal(): void {
-    this.showDialog = true;
-    this.modalService.open();
-  }
-
   submitUser(): void {
     this.logger.debug('about to submit ' + this.signUpForm.value);
 
@@ -164,11 +146,9 @@ export class SignUpComponent implements OnInit {
     };
 
     this.userService.registerUser(registrationCredentials);
-    // this.openModal();
   }
 
-  closeModalAndSendRedirect() {
-    this.modalService.close();
+  sendRedirect() {
     this.logger.debug('about to redirect to: ' + this.redirectUrl);
     window.location.href = this.redirectUrl;
   }
