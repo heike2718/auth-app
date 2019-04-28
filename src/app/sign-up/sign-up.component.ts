@@ -12,8 +12,7 @@ import { environment } from '../../environments/environment';
 import { UserService } from '../services/user.service';
 import { AppData } from '../shared/app-data.service';
 import { RegistrationCredentials } from '../shared/model/registration-credentials';
-import { ModalService } from '../shared/components/modal/modal.service';
-import { MessagesService } from 'hewi-ng-lib';
+import { MessagesService, ModalService } from 'hewi-ng-lib';
 
 @Component({
   selector: 'auth-sign-up',

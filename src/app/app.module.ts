@@ -13,8 +13,6 @@ import { GlobalErrorHandler } from './error/global-error-handler.service';
 import { LogInComponent } from './log-in/log-in.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { FormErrorComponent } from './shared/components/form-error/form-error.component';
-import { ModalComponent } from './shared/components/modal/modal.component';
-import { ModalOpenOnClickDirective } from './shared/components/modal/modal-open-on-click.directive';
 import { HewiNgLibModule } from 'hewi-ng-lib';
 
 
@@ -32,8 +30,6 @@ if (!environment.production) {
   declarations: [
     AppComponent,
     FormErrorComponent,
-    ModalComponent,
-    ModalOpenOnClickDirective,
     SignUpComponent,
     LogInComponent,
     ErrorComponent
