@@ -150,13 +150,13 @@ export class SignUpComponent implements OnInit {
     this.userService.registerUser(registrationCredentials);
   }
 
-  sendRedirect() {
-    this.logger.debug('about to redirect to: ' + this.redirectUrl);
-    window.location.href = this.redirectUrl;
+  gotoLogin(): void {
+
   }
 
-  cancel(): void {
-    window.close();
+  private sendRedirect() {
+    this.logger.debug('about to redirect to: ' + this.redirectUrl);
+    window.location.href = this.redirectUrl;
   }
 }
 

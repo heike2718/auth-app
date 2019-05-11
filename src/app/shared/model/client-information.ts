@@ -6,6 +6,8 @@ export interface ClientCredentials {
 
 export interface ClientInformation {
     clientId: string;
+    name: string;
+    zurueckText: string;
     agbUrl: string;
     loginnameSupported: boolean;
 }

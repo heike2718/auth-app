@@ -12,6 +12,7 @@ body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 1.2rem;
+  background-color: #FAFBFC;
 }
 
 .kleber {
@@ -19,6 +20,30 @@ body {
 	left: -1000px;
 }
 
+.header-3 {
+  margin: 0 10px 0 15px;
+  font-size: 1.75rem;
+}
+
+.page {
+  margin: 10px;
+  padding: 10px;
+  background-color: white;
+  border: 1pt solid;
+  border-color: #D1D5DA;
+  border-radius: 5px;
+}
+
+.hinweis {
+  margin: 10px 5px 10px 5px;
+  padding: 5px;
+  font-size: 1.5rem;
+  font-style: bold;
+  background-color: #FAFBFC;
+  border: 2pt solid;
+  border-color: #FCA326;
+  border-radius: 5px;
+}
 
 footer {
   position: relative;

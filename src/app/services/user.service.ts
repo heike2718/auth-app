@@ -8,6 +8,7 @@ import { map, publishLast, refCount, tap } from 'rxjs/operators';
 import { ResponsePayload } from 'hewi-ng-lib';
 import { AppData } from '../shared/app-data.service';
 import { Logger } from '@nsalaun/ng-logger';
+import { LoginCredentials } from '../shared/model/login-credentials';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,32 @@ export class UserService {
     const redirectUrl = registrationCredentials.clientCredentials.redirectUrl;
 
     this.http.post(url, registrationCredentials).pipe(
+      map(res => <ResponsePayload> res ),
+      publishLast(),
+      refCount(),
+      tap(
+        () => this.logger.debug('inside pipe')
+      )
+    ).subscribe(
+      payload => {
+        this.appData.updateRedirectUrl(redirectUrl + createHash(payload.data));
+      },
+      error => this.httpErrorService.handleError(error, 'registerUser'),
+      () => this.logger.debug('post call completed')
+    );
+  }
+
+  public loginUser(loginCredentials: LoginCredentials): void {
+
+    this.logger.debug('loginUser: start');
+
+    // const headers = new Headers(); headers.append('Content-Type', 'application/json');
+    const url = environment.apiUrl + '/auth/' + loginCredentials.clientCredentials.clientId;
+
+    // Bei Erfolg: ReponsePayload mit INFO-Message
+    const redirectUrl = loginCredentials.clientCredentials.redirectUrl;
+
+    this.http.post(url, loginCredentials).pipe(
       map(res => <ResponsePayload> res ),
       publishLast(),
       refCount(),

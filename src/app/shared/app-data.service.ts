@@ -11,6 +11,8 @@ export class AppData {
 
   private clientInformationSubject = new BehaviorSubject<ClientInformation>({
     clientId: 'unbekannt',
+    name: '',
+    zurueckText: 'zurück',
     agbUrl: '',
     loginnameSupported: false
   });
