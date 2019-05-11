@@ -145,6 +145,8 @@ export class SignUpComponent implements OnInit {
       passwortWdh: this.passwortWdh.value
     };
 
+    this.logger.debug(JSON.stringify(registrationCredentials));
+
     this.userService.registerUser(registrationCredentials);
   }
 
