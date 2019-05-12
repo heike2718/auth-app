@@ -120,7 +120,6 @@ export class LogInComponent implements OnInit, OnDestroy {
     this.messagesService.clear();
 
     const loginCredentials: LoginCredentials = {
-      redirectUrl: '',
       loginName: this.loginName ? this.loginName.value.trim() : null,
       passwort: this.passwort.value,
       kleber: this.kleber ? this.kleber.value : null,
