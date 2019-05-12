@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, AbstractControl, Validators, FormControl } from '@angular/forms';
 import { emailValidator, passwortValidator, passwortPasswortWiederholtValidator } from '../shared/validation/app.validators';
 import { AppConstants } from '../shared/app.constants';
 import { Logger } from '@nsalaun/ng-logger';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { ClientInformation, ClientCredentials } from '../shared/model/client-information';
 import { ClientService } from '../services/client.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { UserService } from '../services/user.service';
 import { AppData } from '../shared/app-data.service';
@@ -19,7 +19,7 @@ import { MessagesService } from 'hewi-ng-lib';
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.css']
 })
-export class SignUpComponent implements OnInit {
+export class SignUpComponent implements OnInit, OnDestroy {
 
   clientInformation$: Observable<ClientInformation>;
 
@@ -53,6 +53,9 @@ export class SignUpComponent implements OnInit {
 
   private redirectUrl = '';
 
+  private redirectSubscription: Subscription;
+
+  private clientInfoSubscription: Subscription;
 
   constructor(private fb: FormBuilder,
     private clientService: ClientService,
@@ -60,6 +63,7 @@ export class SignUpComponent implements OnInit {
     private appData: AppData,
     private messagesService: MessagesService,
     private logger: Logger,
+    private router: Router,
     private route: ActivatedRoute) {
 
     this.signUpForm = this.fb.group({
@@ -86,7 +90,7 @@ export class SignUpComponent implements OnInit {
 
     this.loadClientInformation();
 
-    this.redirectUrl$.pipe(
+    this.redirectSubscription = this.redirectUrl$.pipe(
       filter(str => str.length > 0)
     ).subscribe(
       str => {
@@ -95,7 +99,7 @@ export class SignUpComponent implements OnInit {
       }
     );
 
-    this.clientInformation$.subscribe(
+    this.clientInfoSubscription = this.clientInformation$.subscribe(
       info => {
         if (info.loginnameSupported) {
           this.signUpForm.addControl(
@@ -105,6 +109,15 @@ export class SignUpComponent implements OnInit {
         }
       }
     );
+  }
+
+  ngOnDestroy() {
+    if (this.redirectSubscription) {
+      this.redirectSubscription.unsubscribe();
+    }
+    if (this.clientInfoSubscription) {
+      this.clientInfoSubscription.unsubscribe();
+    }
   }
 
   private loadClientInformation() {
@@ -140,7 +153,8 @@ export class SignUpComponent implements OnInit {
       clientCredentials: this.clientCredentials,
       email: this.email.value.trim(),
       kleber: this.kleber ? this.kleber.value : null,
-      loginName: this.loginName ? this.loginName.value.trim() : null,
+      // wenn man den loginnamen nicht setzen kann, wird die Mailadresse verwendet.
+      loginName: this.loginName ? this.loginName.value.trim() : this.email.value.trim(),
       passwort: this.passwort.value,
       passwortWdh: this.passwortWdh.value
     };
@@ -151,7 +165,7 @@ export class SignUpComponent implements OnInit {
   }
 
   gotoLogin(): void {
-
+    this.router.navigateByUrl('/login');
   }
 
   private sendRedirect() {

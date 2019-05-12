@@ -15,7 +15,7 @@ import { LoginCredentials } from '../shared/model/login-credentials';
 })
 export class UserService {
 
-  constructor(private http: HttpClient, private httpErrorService: HttpErrorService, private appData: AppData, private logger: Logger) {}
+  constructor(private http: HttpClient, private httpErrorService: HttpErrorService, private appData: AppData, private logger: Logger) { }
 
   public registerUser(registrationCredentials: RegistrationCredentials): void {
 
@@ -28,7 +28,7 @@ export class UserService {
     const redirectUrl = registrationCredentials.clientCredentials.redirectUrl;
 
     this.http.post(url, registrationCredentials).pipe(
-      map(res => <ResponsePayload> res ),
+      map(res => <ResponsePayload>res),
       publishLast(),
       refCount(),
       tap(
@@ -48,13 +48,13 @@ export class UserService {
     this.logger.debug('loginUser: start');
 
     // const headers = new Headers(); headers.append('Content-Type', 'application/json');
-    const url = environment.apiUrl + '/auth/' + loginCredentials.clientCredentials.clientId;
+    const url = environment.apiUrl + '/auth/sessions';
 
     // Bei Erfolg: ReponsePayload mit INFO-Message
     const redirectUrl = loginCredentials.clientCredentials.redirectUrl;
 
     this.http.post(url, loginCredentials).pipe(
-      map(res => <ResponsePayload> res ),
+      map(res => <ResponsePayload>res),
       publishLast(),
       refCount(),
       tap(
