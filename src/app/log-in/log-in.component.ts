@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, AbstractControl, Validators, FormControl } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { ClientInformation, ClientCredentials } from '../shared/model/client-information';
+import { ClientInformation, ClientCredentials, createQueryParameters } from '../shared/model/client-information';
 import { ClientService } from '../services/client.service';
 import { UserService } from '../services/user.service';
 import { AppData } from '../shared/app-data.service';
@@ -132,7 +132,11 @@ export class LogInComponent implements OnInit, OnDestroy {
   }
 
   gotoSignUp(): void {
-    this.router.navigateByUrl('/signup');
+    let url = '/signup';
+    if (this.clientCredentials) {
+      url += createQueryParameters(this.clientCredentials);
+    }
+    this.router.navigateByUrl(url);
   }
 
   private sendRedirect() {

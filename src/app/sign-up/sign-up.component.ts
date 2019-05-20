@@ -5,7 +5,7 @@ import { AppConstants } from '../shared/app.constants';
 import { Logger } from '@nsalaun/ng-logger';
 import { Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { ClientInformation, ClientCredentials } from '../shared/model/client-information';
+import { ClientInformation, ClientCredentials, createQueryParameters } from '../shared/model/client-information';
 import { ClientService } from '../services/client.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../environments/environment';
@@ -165,7 +165,11 @@ export class SignUpComponent implements OnInit, OnDestroy {
   }
 
   gotoLogin(): void {
-    this.router.navigateByUrl('/login');
+    let url = '/login';
+    if (this.clientCredentials) {
+      url += createQueryParameters(this.clientCredentials);
+    }
+    this.router.navigateByUrl(url);
   }
 
   private sendRedirect() {

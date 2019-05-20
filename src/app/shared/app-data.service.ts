@@ -27,7 +27,7 @@ export class AppData {
   );
 
   clientCredentials$: Observable<ClientCredentials> =
-    this.clientCredentialsSubject.asObservable().pipe(filter(subj => !!undefined));
+    this.clientCredentialsSubject.asObservable().pipe(filter(_subj => !!undefined));
 
   redirectUrl$: Observable<string> = this.redirectUrlSubject.asObservable();
 
