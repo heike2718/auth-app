@@ -37,7 +37,7 @@ if (!environment.production) {
   imports: [
     BrowserModule,
     AppRoutingModule,
-    RouterModule.forRoot(routerConfig),
+    RouterModule.forRoot(routerConfig, {useHash: true}),
     FormsModule,
     HttpClientModule,
     NgbModule.forRoot(),
