@@ -9,11 +9,12 @@ import { Logger } from '@nsalaun/ng-logger';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  
+
   version = environment.version;
   envName = environment.envName;
   showEnv = !environment.production;
   api = environment.apiUrl;
+  logo = environment.assetsUrl + '/mja_logo.png';
 
   constructor(private logger: Logger) {}
 
