@@ -23,6 +23,7 @@ __LogIn__
 http://localhost:4300/login?clientId=WLJLH4vsldWapZrMZi2U5HKRBVpgyUiRTWwX7aiJd8nX&redirectUrl=http:%2F%2Flocalhost:4200
 
 ## Notizen (chronologisch absteigend)
+* __Release 1.1.2:__ fix-fstream-cve
 * __Release 1.1.1:__ rename labels submit buttons
 * __Release 1.1.0:__ assets werden jetzt immer gefunden
 * __Roundtrip mit Redirect fertig (Test-Dialog-Button noch vorhanden):__ commit: a82ed929316c80713a6dbb5fbfeb8d683d266c9c
