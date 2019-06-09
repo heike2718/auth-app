@@ -2,21 +2,7 @@
 
   <div *ngIf="clientInformation$ | async as clientInfo else loadingIdicator">
 
-    <div class="row">
-      <div class="col-ms-12  header-3">Einloggen</div>
-      <div class="col-md-12">und {{clientInfo.zurueckText}}</div>
-    </div>
-
-    <div class="row hinweis">
-      <div class="col-sm-12 col-md-9">Ich habe noch kein Minikänguru-Konto</div>
-      <div class="col-md-3 btn-wrapper">
-        <button class="btn btn-primary" (click)="gotoSignUp()">
-          registrieren
-        </button>
-      </div>
-    </div>
-
-    <p *ngIf="showClientId">clientID: {{clientInfo.clientId}}</p>
+    <p>Einloggen und {{clientInfo.zurueckText}}</p>
 
     <form novalidate [formGroup]="loginForm">
 
@@ -57,18 +43,24 @@
 
       <div class="row">
         <div class="col-md-2 btn-wrapper">
-          <button class="col-md-12 btn btn-primary" (click)="submit()"
-            [disabled]="!loginForm.valid || submitDisabled">
+          <button class="col-md-12 btn btn-primary" (click)="submit()" [disabled]="!loginForm.valid || submitDisabled">
             einloggen
           </button>
         </div>
       </div>
     </form>
   </div>
+
+  <div class="row hinweis">
+    <div class="col-sm-12 col-md-9">Ich habe noch kein Minikänguru-Konto</div>
+    <div class="col-md-3 btn-wrapper">
+      <button class="btn btn-primary" (click)="gotoSignUp()">
+        registrieren
+      </button>
+    </div>
+  </div>
 </div>
 
 <ng-template #loadingIdicator>
   <h3>Bitte warten...</h3>
 </ng-template>
-
-
