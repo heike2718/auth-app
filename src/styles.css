@@ -50,3 +50,17 @@ footer {
   margin-top: 250px;
 }
 
+
+@media (max-width: 768px) {
+  .h4  {
+    font-size: 1rem;
+  }
+  .header-3, .hinweis  {
+    font-size: 1.2rem;
+  }
+  .body {
+    font-size: 1rem;
+  }
+}
+
+
