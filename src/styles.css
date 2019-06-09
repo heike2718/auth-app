@@ -50,17 +50,16 @@ footer {
   margin-top: 250px;
 }
 
+/* ===== small devices ==== */
 
 @media (max-width: 768px) {
-  .h4  {
+  .h4, body  {
     font-size: 1rem;
   }
   .header-3, .hinweis  {
     font-size: 1.2rem;
   }
-  .body {
-    font-size: 1rem;
+  h2 {
+    font-size: 1.4rem;
   }
 }
-
-

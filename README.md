@@ -23,6 +23,8 @@ __LogIn__
 http://localhost:4300/login?clientId=WLJLH4vsldWapZrMZi2U5HKRBVpgyUiRTWwX7aiJd8nX&redirectUrl=http:%2F%2Flocalhost:4200
 
 ## Notizen (chronologisch absteigend)
+
+* __Release 1.1.3:__ small devices: less content and smaller font-sizes, forms nerarer to top of page
 * __Release 1.1.2:__ fix-fstream-cve
 * __Release 1.1.1:__ rename labels submit buttons
 * __Release 1.1.0:__ assets werden jetzt immer gefunden
