@@ -2,22 +2,7 @@
 
   <div *ngIf="clientInformation$ | async as clientInfo else loadingIdicator">
 
-    <div class="row">
-      <div class="col-ms-12 header-3">Minikänguru-Konto anlegen</div>
-      <div class="col-md-12">und {{clientInfo.zurueckText}}</div>
-    </div>
-
-    <div class="row hinweis">
-      <div class="col-sm-12 col-md-9">Ich habe bereits ein Minikänguru-Konto</div>
-      <div class="col-md-3 btn-wrapper">
-        <button class="btn btn-primary" (click)="gotoLogin()">
-          einloggen
-        </button>
-      </div>
-    </div>
-
-    <p *ngIf="showClientId">clientID: {{clientInfo.clientId}}</p>
-
+    <p>Minikänguru-Konto anlegen und {{clientInfo.zurueckText}}</p>
 
     <form novalidate [formGroup]="signUpForm">
 
@@ -120,10 +105,18 @@
         </div>
       </div>
     </form>
+
+    <div class="row hinweis">
+      <div class="col-sm-12 col-md-9">Ich habe bereits ein Minikänguru-Konto</div>
+      <div class="col-md-3 btn-wrapper">
+        <button class="btn btn-primary" (click)="gotoLogin()">
+          einloggen
+        </button>
+      </div>
+    </div>
   </div>
 </div>
 
 <ng-template #loadingIdicator>
   <h3>Bitte warten...</h3>
 </ng-template>
-

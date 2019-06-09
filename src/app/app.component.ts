@@ -15,13 +15,17 @@ export class AppComponent implements OnInit {
   showEnv = !environment.production;
   api = environment.apiUrl;
   logo = environment.assetsUrl + '/mja_logo.png';
+  innerWidth: number;
 
-  constructor(private logger: Logger) {}
+  constructor(private logger: Logger) { }
 
   ngOnInit() {
     const location = window.location;
     const hash = window.location.href
     this.logger.debug('location=' + location);
     this.logger.debug('hash=' + hash);
+    this.innerWidth = window.innerWidth;
+
+    this.logger.debug('innerWidth=' + this.innerWidth);
   }
 }
