@@ -3,11 +3,11 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
-  version: '1.1.3',
-  envName: 'Test',
-  apiUrl: 'http://localhost:9000/authprovider',
-  assetsUrl: 'auth-app/assets'
+	production: false,
+	version: '1.2.0',
+	envName: 'Test',
+	apiUrl: 'http://localhost:9000/authprovider',
+	assetsUrl: 'auth-app/assets'
 };
 
 /*
