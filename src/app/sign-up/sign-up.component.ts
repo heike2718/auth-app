@@ -15,167 +15,178 @@ import { RegistrationCredentials } from '../shared/model/registration-credential
 import { MessagesService } from 'hewi-ng-lib';
 
 @Component({
-  selector: 'auth-sign-up',
-  templateUrl: './sign-up.component.html',
-  styleUrls: ['./sign-up.component.css']
+	selector: 'auth-sign-up',
+	templateUrl: './sign-up.component.html',
+	styleUrls: ['./sign-up.component.css']
 })
 export class SignUpComponent implements OnInit, OnDestroy {
 
-  clientInformation$: Observable<ClientInformation>;
+	clientInformation$: Observable<ClientInformation>;
 
-  redirectUrl$: Observable<string>;
+	redirectUrl$: Observable<string>;
 
-  private clientCredentials: ClientCredentials;
+	private clientCredentials: ClientCredentials;
 
-  signUpForm: FormGroup;
+	signUpForm: FormGroup;
 
-  agbGelesen: AbstractControl;
+	agbGelesen: AbstractControl;
 
-  loginName: AbstractControl;
+	loginName: AbstractControl;
 
-  email: AbstractControl;
+	vorname: AbstractControl;
 
-  // TODO: loginName
+	nachname: AbstractControl;
 
-  passwort: AbstractControl;
+	email: AbstractControl;
 
-  passwortWdh: AbstractControl;
+	passwort: AbstractControl;
 
-  kleber: AbstractControl;
+	passwortWdh: AbstractControl;
 
-  infoPasswortExpanded = false;
+	kleber: AbstractControl;
 
-  tooltipPasswort: string;
+	infoPasswortExpanded = false;
 
-  submitDisabled: true;
+	tooltipPasswort: string;
 
-  showClientId: boolean;
+	submitDisabled: true;
 
-  private redirectUrl = '';
+	showClientId: boolean;
 
-  private redirectSubscription: Subscription;
+	private redirectUrl = '';
 
-  private clientInfoSubscription: Subscription;
+	private redirectSubscription: Subscription;
 
-  constructor(private fb: FormBuilder,
-    private clientService: ClientService,
-    private userService: UserService,
-    private appData: AppData,
-    private messagesService: MessagesService,
-    private logger: Logger,
-    private router: Router,
-    private route: ActivatedRoute) {
+	private clientInfoSubscription: Subscription;
 
-    this.signUpForm = this.fb.group({
-      'agbGelesen': [false, [Validators.requiredTrue]],
-      'email': ['', [Validators.required, emailValidator]],
-      'passwort': ['', [Validators.required, passwortValidator]],
-      'passwortWdh': ['', [Validators.required, passwortValidator]],
-      'kleber': ['']
-    }, { validator: passwortPasswortWiederholtValidator });
+	constructor(private fb: FormBuilder,
+		private clientService: ClientService,
+		private userService: UserService,
+		private appData: AppData,
+		private messagesService: MessagesService,
+		private logger: Logger,
+		private router: Router,
+		private route: ActivatedRoute) {
 
-    this.agbGelesen = this.signUpForm.controls['agbGelesen'];
-    this.email = this.signUpForm.controls['email'];
-    this.passwort = this.signUpForm.controls['passwort'];
-    this.passwortWdh = this.signUpForm.controls['passwortWdh'];
-    this.kleber = this.signUpForm['kleber'];
+		this.signUpForm = this.fb.group({
+			'agbGelesen': [false, [Validators.requiredTrue]],
+			'email': ['', [Validators.required, emailValidator]],
+			'passwort': ['', [Validators.required, passwortValidator]],
+			'passwortWdh': ['', [Validators.required, passwortValidator]],
+			'kleber': ['']
+		}, { validator: passwortPasswortWiederholtValidator });
 
-    this.tooltipPasswort = AppConstants.tooltips.PASSWORTREGELN;
-    this.showClientId = !environment.production;
-  }
+		this.agbGelesen = this.signUpForm.controls['agbGelesen'];
+		this.email = this.signUpForm.controls['email'];
+		this.passwort = this.signUpForm.controls['passwort'];
+		this.passwortWdh = this.signUpForm.controls['passwortWdh'];
+		this.kleber = this.signUpForm['kleber'];
+		this.tooltipPasswort = AppConstants.tooltips.PASSWORTREGELN;
+		this.showClientId = !environment.production;
+	}
 
-  ngOnInit() {
-    this.clientInformation$ = this.appData.clientInformation$;
-    this.redirectUrl$ = this.appData.redirectUrl$;
+	ngOnInit() {
+		this.clientInformation$ = this.appData.clientInformation$;
+		this.redirectUrl$ = this.appData.redirectUrl$;
 
-    this.loadClientInformation();
+		this.loadClientInformation();
 
-    this.redirectSubscription = this.redirectUrl$.pipe(
-      filter(str => str.length > 0)
-    ).subscribe(
-      str => {
-        this.redirectUrl = str;
-        this.sendRedirect();
-      }
-    );
+		this.redirectSubscription = this.redirectUrl$.pipe(
+			filter(str => str.length > 0)
+		).subscribe(
+			str => {
+				this.redirectUrl = str;
+				this.sendRedirect();
+			}
+		);
 
-    this.clientInfoSubscription = this.clientInformation$.subscribe(
-      info => {
-        if (info.loginnameSupported) {
-          this.signUpForm.addControl(
-            'loginName', new FormControl('', [Validators.required, Validators.maxLength(255)])
-          );
-          this.loginName = this.signUpForm.controls['loginName'];
-        }
-      }
-    );
-  }
+		this.clientInfoSubscription = this.clientInformation$.subscribe(
+			info => {
+				if (info.loginnameSupported) {
+					this.signUpForm.addControl(
+						'loginName', new FormControl('', [Validators.required, Validators.maxLength(255)])
+					);
+					this.loginName = this.signUpForm.controls['loginName'];
+				}
+				if (info.namenRequired) {
+					this.signUpForm.addControl(
+						'vorname', new FormControl('', [Validators.required, Validators.maxLength(100)])
+					);
+					this.vorname = this.signUpForm.controls['vorname'];
+					this.signUpForm.addControl(
+						'nachname', new FormControl('', [Validators.required, Validators.maxLength(100)])
+					);
+					this.nachname = this.signUpForm.controls['nachname'];
+				}
+			}
+		);
+	}
 
-  ngOnDestroy() {
-    if (this.redirectSubscription) {
-      this.redirectSubscription.unsubscribe();
-    }
-    if (this.clientInfoSubscription) {
-      this.clientInfoSubscription.unsubscribe();
-    }
-  }
+	ngOnDestroy() {
+		if (this.redirectSubscription) {
+			this.redirectSubscription.unsubscribe();
+		}
+		if (this.clientInfoSubscription) {
+			this.clientInfoSubscription.unsubscribe();
+		}
+	}
 
-  private loadClientInformation() {
-    let clientId = 'undefined';
-    let redirectUrl = 'undefined';
+	private loadClientInformation() {
+		let clientId = 'undefined';
+		let redirectUrl = 'undefined';
 
-    this.route.queryParams.pipe(
-      filter(params => params.clientId || params.redirectUrl)
-    ).subscribe(
-      params => {
-        clientId = params.clientId;
-        redirectUrl = params.redirectUrl;
-      }
-    );
+		this.route.queryParams.pipe(
+			filter(params => params.clientId || params.redirectUrl)
+		).subscribe(
+			params => {
+				clientId = params.clientId;
+				redirectUrl = params.redirectUrl;
+			}
+		);
 
-    if (clientId !== 'undefined') {
-      this.clientCredentials = {
-        clientId: clientId,
-        redirectUrl: redirectUrl
-      };
-      this.appData.updateClientCredentials(this.clientCredentials);
-      this.clientService.getClient(this.clientCredentials);
-    }
-  }
+		if (clientId !== 'undefined') {
+			this.clientCredentials = {
+				clientId: clientId,
+				redirectUrl: redirectUrl
+			};
+			this.appData.updateClientCredentials(this.clientCredentials);
+			this.clientService.getClient(this.clientCredentials);
+		}
+	}
 
-  submitUser(): void {
-    this.logger.debug('about to submit ' + this.signUpForm.value);
+	submitUser(): void {
+		this.logger.debug('about to submit ' + this.signUpForm.value);
 
-    this.messagesService.clear();
+		this.messagesService.clear();
 
-    const registrationCredentials: RegistrationCredentials = {
-      agbGelesen: this.agbGelesen.value,
-      clientCredentials: this.clientCredentials,
-      email: this.email.value.trim(),
-      kleber: this.kleber ? this.kleber.value : null,
-      // wenn man den loginnamen nicht setzen kann, wird die Mailadresse verwendet.
-      loginName: this.loginName ? this.loginName.value.trim() : this.email.value.trim(),
-      passwort: this.passwort.value,
-      passwortWdh: this.passwortWdh.value
-    };
+		const registrationCredentials: RegistrationCredentials = {
+			agbGelesen: this.agbGelesen.value,
+			clientCredentials: this.clientCredentials,
+			email: this.email.value.trim(),
+			kleber: this.kleber ? this.kleber.value : null,
+			vorname: this.vorname ? this.vorname.value.trim() : null,
+			nachname: this.nachname ? this.nachname.value.trim() : null,
+			// wenn man den loginnamen nicht setzen kann, wird die Mailadresse verwendet.
+			loginName: this.loginName ? this.loginName.value.trim() : this.email.value.trim(),
+			passwort: this.passwort.value,
+			passwortWdh: this.passwortWdh.value
+		};
 
-    this.logger.debug(JSON.stringify(registrationCredentials));
+		this.logger.debug(JSON.stringify(registrationCredentials));
 
-    this.userService.registerUser(registrationCredentials);
-  }
+		this.userService.registerUser(registrationCredentials);
+	}
 
-  gotoLogin(): void {
-    let url = '/login';
-    if (this.clientCredentials) {
-      url += createQueryParameters(this.clientCredentials);
-    }
-    this.router.navigateByUrl(url);
-  }
+	gotoLogin(): void {
+		let url = '/login';
+		if (this.clientCredentials) {
+			url += createQueryParameters(this.clientCredentials);
+		}
+		this.router.navigateByUrl(url);
+	}
 
-  private sendRedirect() {
-    this.logger.debug('about to redirect to: ' + this.redirectUrl);
-    window.location.href = this.redirectUrl;
-  }
+	private sendRedirect() {
+		this.logger.debug('about to redirect to: ' + this.redirectUrl);
+		window.location.href = this.redirectUrl;
+	}
 }
-
-

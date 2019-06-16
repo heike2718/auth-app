@@ -11,64 +11,62 @@ import { Logger } from '@nsalaun/ng-logger';
 import { LoginCredentials } from '../shared/model/login-credentials';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class UserService {
 
-  constructor(private http: HttpClient, private httpErrorService: HttpErrorService, private appData: AppData, private logger: Logger) { }
+	constructor(private http: HttpClient, private httpErrorService: HttpErrorService, private appData: AppData, private logger: Logger) { }
 
-  public registerUser(registrationCredentials: RegistrationCredentials): void {
+	public registerUser(registrationCredentials: RegistrationCredentials): void {
 
-    this.logger.debug('registerUser: start');
+		this.logger.debug('registerUser: start');
 
-    // const headers = new Headers(); headers.append('Content-Type', 'application/json');
-    const url = environment.apiUrl + '/users';
+		// const headers = new Headers(); headers.append('Content-Type', 'application/json');
+		const url = environment.apiUrl + '/users';
 
-    // Bei Erfolg: ReponsePayload mit INFO-Message
-    const redirectUrl = registrationCredentials.clientCredentials.redirectUrl;
+		// Bei Erfolg: ReponsePayload mit INFO-Message
+		const redirectUrl = registrationCredentials.clientCredentials.redirectUrl;
 
-    this.http.post(url, registrationCredentials).pipe(
-      map(res => <ResponsePayload>res),
-      publishLast(),
-      refCount(),
-      tap(
-        () => this.logger.debug('inside pipe')
-      )
-    ).subscribe(
-      payload => {
-        this.appData.updateRedirectUrl(redirectUrl + createHash(payload.data));
-      },
-      error => this.httpErrorService.handleError(error, 'registerUser'),
-      () => this.logger.debug('post call completed')
-    );
-  }
+		this.http.post(url, registrationCredentials).pipe(
+			map(res => <ResponsePayload>res),
+			publishLast(),
+			refCount(),
+			tap(
+				() => this.logger.debug('inside pipe')
+			)
+		).subscribe(
+			payload => {
+				this.appData.updateRedirectUrl(redirectUrl + createHash(payload.data));
+			},
+			error => this.httpErrorService.handleError(error, 'registerUser'),
+			() => this.logger.debug('post call completed')
+		);
+	}
 
-  public loginUser(loginCredentials: LoginCredentials): void {
+	public loginUser(loginCredentials: LoginCredentials): void {
 
-    this.logger.debug('loginUser: start');
+		this.logger.debug('loginUser: start');
 
-    // const headers = new Headers(); headers.append('Content-Type', 'application/json');
-    const url = environment.apiUrl + '/auth/sessions';
+		// const headers = new Headers(); headers.append('Content-Type', 'application/json');
+		const url = environment.apiUrl + '/auth/sessions';
 
-    // Bei Erfolg: ReponsePayload mit INFO-Message
-    const redirectUrl = loginCredentials.clientCredentials.redirectUrl;
+		// Bei Erfolg: ReponsePayload mit INFO-Message
+		const redirectUrl = loginCredentials.clientCredentials.redirectUrl;
 
-    this.http.post(url, loginCredentials).pipe(
-      map(res => <ResponsePayload>res),
-      publishLast(),
-      refCount(),
-      tap(
-        () => this.logger.debug('inside pipe')
-      )
-    ).subscribe(
-      payload => {
-        this.appData.updateRedirectUrl(redirectUrl + createHash(payload.data));
-      },
-      error => this.httpErrorService.handleError(error, 'registerUser'),
-      () => this.logger.debug('post call completed')
-    );
-  }
+		this.http.post(url, loginCredentials).pipe(
+			map(res => <ResponsePayload>res),
+			publishLast(),
+			refCount(),
+			tap(
+				() => this.logger.debug('inside pipe')
+			)
+		).subscribe(
+			payload => {
+				this.appData.updateRedirectUrl(redirectUrl + createHash(payload.data));
+			},
+			error => this.httpErrorService.handleError(error, 'registerUser'),
+			() => this.logger.debug('post call completed')
+		);
+	}
 }
-
-
 
