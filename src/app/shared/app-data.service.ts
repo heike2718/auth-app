@@ -5,45 +5,47 @@ import { filter } from 'rxjs/operators';
 import * as _ from 'lodash';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class AppData {
 
-  private clientInformationSubject = new BehaviorSubject<ClientInformation>({
-    clientId: 'unbekannt',
-    name: '',
-    zurueckText: 'zurück',
-    agbUrl: '',
-    loginnameSupported: false
-  });
+	private clientInformationSubject = new BehaviorSubject<ClientInformation>({
+		clientId: 'unbekannt',
+		name: '',
+		zurueckText: 'zurück',
+		agbUrl: '',
+		loginnameSupported: false,
+		namenRequired: false
+	});
 
-  private clientCredentialsSubject = new BehaviorSubject<ClientCredentials>(undefined);
+	private clientCredentialsSubject = new BehaviorSubject<ClientCredentials>(undefined);
 
-  private redirectUrlSubject = new BehaviorSubject<string>('');
+	private redirectUrlSubject = new BehaviorSubject<string>('');
 
-  clientInformation$: Observable<ClientInformation> =
-    this.clientInformationSubject.asObservable().pipe(
-    filter(client => client.clientId !== 'unbekannt')
-  );
+	clientInformation$: Observable<ClientInformation> =
+		this.clientInformationSubject.asObservable().pipe(
+			filter(client => client.clientId !== 'unbekannt')
+		);
 
-  clientCredentials$: Observable<ClientCredentials> =
-    this.clientCredentialsSubject.asObservable().pipe(filter(_subj => !!undefined));
+	clientCredentials$: Observable<ClientCredentials> =
+		this.clientCredentialsSubject.asObservable().pipe(filter(_subj => !!undefined));
 
-  redirectUrl$: Observable<string> = this.redirectUrlSubject.asObservable();
+	redirectUrl$: Observable<string> = this.redirectUrlSubject.asObservable();
 
 
-  constructor() { }
+	constructor() { }
 
-  updateClientInformation(clientInformation: ClientInformation) {
-    this.clientInformationSubject.next(_.cloneDeep(clientInformation));
-  }
+	updateClientInformation(clientInformation: ClientInformation) {
+		const ci = _.cloneDeep(clientInformation);
+		this.clientInformationSubject.next(ci);
+	}
 
-  updateClientCredentials(clientCredentials: ClientCredentials) {
-    this.clientCredentialsSubject.next(_.cloneDeep(clientCredentials));
-  }
+	updateClientCredentials(clientCredentials: ClientCredentials) {
+		this.clientCredentialsSubject.next(_.cloneDeep(clientCredentials));
+	}
 
-  updateRedirectUrl(redirectUrl: string) {
-    console.log(redirectUrl);
-    this.redirectUrlSubject.next(redirectUrl);
-  }
+	updateRedirectUrl(redirectUrl: string) {
+		console.log(redirectUrl);
+		this.redirectUrlSubject.next(redirectUrl);
+	}
 }

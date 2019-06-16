@@ -3,6 +3,8 @@ export interface RegistrationCredentials {
 
     email: string;
     loginName: string;
+    vorname?: string;
+    nachname?: string;
     passwort: string;
     passwortWdh: string;
     agbGelesen: boolean;

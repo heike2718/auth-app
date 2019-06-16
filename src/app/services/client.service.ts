@@ -10,22 +10,23 @@ import { ResponsePayload } from 'hewi-ng-lib';
 
 /** ClientService holt die Daten zum Client */
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class ClientService {
 
-  constructor(private http: HttpClient, private httpErrorService: HttpErrorService, private logger: Logger, private appData: AppData) { }
+	constructor(private http: HttpClient, private httpErrorService: HttpErrorService, private logger: Logger, private appData: AppData) { }
 
-  getClient(clientCredentials: ClientCredentials): void {
+	getClient(clientCredentials: ClientCredentials): void {
 
-    const url = environment.apiUrl + '/clients' + createQueryParameters(clientCredentials);
+		const url = environment.apiUrl + '/clients' + createQueryParameters(clientCredentials);
 
-    this.http.get<ResponsePayload>(url).pipe(
-      publishLast(),
-      refCount()
-    ).subscribe(
-      (respPayload: ResponsePayload) => this.appData.updateClientInformation(respPayload.data),
-      error => this.httpErrorService.handleError(error, 'getClient')
-    );
-  }
+		this.http.get<ResponsePayload>(url).pipe(
+			publishLast(),
+			refCount()
+		).subscribe(
+			(respPayload: ResponsePayload) => this.appData.updateClientInformation(respPayload.data),
+			error => this.httpErrorService.handleError(error, 'getClient')
+		);
+	}
 }
+

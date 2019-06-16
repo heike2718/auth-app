@@ -4,26 +4,27 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Logger } from '@nsalaun/ng-logger';
 
 @Injectable()
-export class GlobalErrorHandler implements ErrorHandler  {
+export class GlobalErrorHandler implements ErrorHandler {
 
-    constructor(private injector: Injector) { }
+	constructor(private injector: Injector) { }
 
-      handleError(error: any): void {
+	handleError(error: any): void {
 
-    // ErrorHandler wird vor allen anderen Injectables instanziiert,
-    // so dass man Logger und MessagesService nicht im Konstruktor injecten kann.
-    const logger = this.injector.get(Logger);
-    const router = this.injector.get(Router);
+		// ErrorHandler wird vor allen anderen Injectables instanziiert,
+		// so dass man Logger und MessagesService nicht im Konstruktor injecten kann.
+		const logger = this.injector.get(Logger);
+		const router = this.injector.get(Router);
 
-    logger.debug(JSON.stringify(error));
+		logger.debug(JSON.stringify(error));
 
-    if (error instanceof HttpErrorResponse) {
-      logger.debug('das sollte nicht vorkommen, da diese Errors vom HttpErrorService behandelt werden');
-    } else {
-      logger.error('Unerwarteter Fehler: ' + error.message);
-    }
+		if (error instanceof HttpErrorResponse) {
+			logger.debug('das sollte nicht vorkommen, da diese Errors vom HttpErrorService behandelt werden');
+		} else {
+			logger.error('Unerwarteter Fehler: ' + error.message);
+		}
 
-    router.navigateByUrl('/error');
-  }
+		router.navigateByUrl('/error');
+	}
 }
+
 
