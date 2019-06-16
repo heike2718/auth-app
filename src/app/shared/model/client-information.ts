@@ -10,6 +10,7 @@ export interface ClientInformation {
     zurueckText: string;
     agbUrl: string;
     loginnameSupported: boolean;
+    namenRequired: boolean;
 }
 
 export function createQueryParameters(clientCredentials: ClientCredentials) {

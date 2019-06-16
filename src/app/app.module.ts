@@ -22,33 +22,34 @@ import { environment } from '../environments/environment';
 // Set different log level depending on environment.
 let LOG_LEVEL = Level.ERROR;
 if (!environment.production) {
-  LOG_LEVEL = Level.DEBUG;
+	LOG_LEVEL = Level.DEBUG;
 }
 
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    FormErrorComponent,
-    SignUpComponent,
-    LogInComponent,
-    ErrorComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    RouterModule.forRoot(routerConfig, {useHash: true}),
-    FormsModule,
-    HttpClientModule,
-    NgbModule.forRoot(),
-    ReactiveFormsModule,
-    HewiNgLibModule,
-    NgLoggerModule.forRoot(LOG_LEVEL),
-  ],
-  providers: [
-    GlobalErrorHandler,
-    {provide: ErrorHandler, useClass: GlobalErrorHandler}
-  ],
-  bootstrap: [AppComponent]
+	declarations: [
+		AppComponent,
+		FormErrorComponent,
+		SignUpComponent,
+		LogInComponent,
+		ErrorComponent
+	],
+	imports: [
+		BrowserModule,
+		AppRoutingModule,
+		RouterModule.forRoot(routerConfig, { useHash: true }),
+		FormsModule,
+		HttpClientModule,
+		NgbModule.forRoot(),
+		ReactiveFormsModule,
+		HewiNgLibModule,
+		NgLoggerModule.forRoot(LOG_LEVEL),
+	],
+	providers: [
+		GlobalErrorHandler,
+		{ provide: ErrorHandler, useClass: GlobalErrorHandler }
+	],
+	bootstrap: [AppComponent]
 })
 export class AppModule { }
+

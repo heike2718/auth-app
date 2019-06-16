@@ -14,133 +14,134 @@ import { LoginCredentials } from '../shared/model/login-credentials';
 import { passwortValidator } from '../shared/validation/app.validators';
 
 @Component({
-  selector: 'auth-log-in',
-  templateUrl: './log-in.component.html',
-  styleUrls: ['./log-in.component.css']
+	selector: 'auth-log-in',
+	templateUrl: './log-in.component.html',
+	styleUrls: ['./log-in.component.css']
 })
 export class LogInComponent implements OnInit, OnDestroy {
 
-  clientInformation$: Observable<ClientInformation>;
+	clientInformation$: Observable<ClientInformation>;
 
-  redirectUrl$: Observable<string>;
+	redirectUrl$: Observable<string>;
 
-  private clientCredentials: ClientCredentials;
+	private clientCredentials: ClientCredentials;
 
-  loginForm: FormGroup;
+	loginForm: FormGroup;
 
-  loginName: AbstractControl;
+	loginName: AbstractControl;
 
-  // TODO: loginName
+	// TODO: loginName
 
-  passwort: AbstractControl;
+	passwort: AbstractControl;
 
-  kleber: AbstractControl;
+	kleber: AbstractControl;
 
-  submitDisabled: true;
+	submitDisabled: true;
 
-  showClientId: boolean;
+	showClientId: boolean;
 
-  private redirectUrl = '';
+	private redirectUrl = '';
 
-  private redirectSubscription: Subscription;
-
-
-  constructor(private fb: FormBuilder,
-    private clientService: ClientService,
-    private userService: UserService,
-    private appData: AppData,
-    private messagesService: MessagesService,
-    private logger: Logger,
-    private router: Router,
-    private route: ActivatedRoute) {
+	private redirectSubscription: Subscription;
 
 
-    this.loginForm = this.fb.group({
-      'loginName': ['', [Validators.required]],
-      'passwort': ['', [Validators.required, passwortValidator]],
-      'kleber': ['']
-    });
+	constructor(private fb: FormBuilder,
+		private clientService: ClientService,
+		private userService: UserService,
+		private appData: AppData,
+		private messagesService: MessagesService,
+		private logger: Logger,
+		private router: Router,
+		private route: ActivatedRoute) {
 
-    this.loginName = this.loginForm.controls['loginName'];
-    this.passwort = this.loginForm.controls['passwort'];
-    this.kleber = this.loginForm['kleber'];
 
-    this.showClientId = !environment.production;
-  }
+		this.loginForm = this.fb.group({
+			'loginName': ['', [Validators.required]],
+			'passwort': ['', [Validators.required, passwortValidator]],
+			'kleber': ['']
+		});
 
-  ngOnInit() {
-    this.clientInformation$ = this.appData.clientInformation$;
-    this.redirectUrl$ = this.appData.redirectUrl$;
+		this.loginName = this.loginForm.controls['loginName'];
+		this.passwort = this.loginForm.controls['passwort'];
+		this.kleber = this.loginForm['kleber'];
 
-    this.loadClientInformation();
+		this.showClientId = !environment.production;
+	}
 
-    this.redirectUrl$.pipe(
-      filter(str => str.length > 0)
-    ).subscribe(
-      str => {
-        this.redirectUrl = str;
-        this.sendRedirect();
-      }
-    );
+	ngOnInit() {
+		this.clientInformation$ = this.appData.clientInformation$;
+		this.redirectUrl$ = this.appData.redirectUrl$;
 
-  }
+		this.loadClientInformation();
 
-  ngOnDestroy() {
-    if (this.redirectSubscription) {
-      this.redirectSubscription.unsubscribe();
-    }
-  }
+		this.redirectUrl$.pipe(
+			filter(str => str.length > 0)
+		).subscribe(
+			str => {
+				this.redirectUrl = str;
+				this.sendRedirect();
+			}
+		);
 
-  private loadClientInformation() {
-    let clientId = 'undefined';
-    let redirectUrl = 'undefined';
+	}
 
-    this.redirectSubscription = this.route.queryParams.pipe(
-      filter(params => params.clientId || params.redirectUrl)
-    ).subscribe(
-      params => {
-        clientId = params.clientId;
-        redirectUrl = params.redirectUrl;
-      }
-    );
+	ngOnDestroy() {
+		if (this.redirectSubscription) {
+			this.redirectSubscription.unsubscribe();
+		}
+	}
 
-    if (clientId !== 'undefined') {
-      this.clientCredentials = {
-        clientId: clientId,
-        redirectUrl: redirectUrl
-      };
-      this.appData.updateClientCredentials(this.clientCredentials);
-      this.clientService.getClient(this.clientCredentials);
-    }
-  }
+	private loadClientInformation() {
+		let clientId = 'undefined';
+		let redirectUrl = 'undefined';
 
-  submit(): void {
-    this.logger.debug('about to submit ' + this.loginForm.value);
+		this.redirectSubscription = this.route.queryParams.pipe(
+			filter(params => params.clientId || params.redirectUrl)
+		).subscribe(
+			params => {
+				clientId = params.clientId;
+				redirectUrl = params.redirectUrl;
+			}
+		);
 
-    this.messagesService.clear();
+		if (clientId !== 'undefined') {
+			this.clientCredentials = {
+				clientId: clientId,
+				redirectUrl: redirectUrl
+			};
+			this.appData.updateClientCredentials(this.clientCredentials);
+			this.clientService.getClient(this.clientCredentials);
+		}
+	}
 
-    const loginCredentials: LoginCredentials = {
-      loginName: this.loginName ? this.loginName.value.trim() : null,
-      passwort: this.passwort.value,
-      kleber: this.kleber ? this.kleber.value : null,
-      clientCredentials: this.clientCredentials,
-    };
+	submit(): void {
+		this.logger.debug('about to submit ' + this.loginForm.value);
 
-    this.logger.debug(JSON.stringify(loginCredentials));
+		this.messagesService.clear();
 
-    this.userService.loginUser(loginCredentials);
-  }
+		const loginCredentials: LoginCredentials = {
+			loginName: this.loginName ? this.loginName.value.trim() : null,
+			passwort: this.passwort.value,
+			kleber: this.kleber ? this.kleber.value : null,
+			clientCredentials: this.clientCredentials,
+		};
 
-  gotoSignUp(): void {
-    let url = '/signup';
-    if (this.clientCredentials) {
-      url += createQueryParameters(this.clientCredentials);
-    }
-    this.router.navigateByUrl(url);
-  }
+		this.logger.debug(JSON.stringify(loginCredentials));
 
-  private sendRedirect() {
-    this.logger.debug('about to redirect to: ' + this.redirectUrl);
-    window.location.href = this.redirectUrl;
-  }
+		this.userService.loginUser(loginCredentials);
+	}
+
+	gotoSignUp(): void {
+		let url = '/signup';
+		if (this.clientCredentials) {
+			url += createQueryParameters(this.clientCredentials);
+		}
+		this.router.navigateByUrl(url);
+	}
+
+	private sendRedirect() {
+		this.logger.debug('about to redirect to: ' + this.redirectUrl);
+		window.location.href = this.redirectUrl;
+	}
 }
+
