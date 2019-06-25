@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, AbstractControl, Validators, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, AbstractControl, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { ClientInformation, ClientCredentials, createQueryParameters } from '../shared/model/client-information';
@@ -29,8 +29,6 @@ export class LogInComponent implements OnInit, OnDestroy {
 	loginForm: FormGroup;
 
 	loginName: AbstractControl;
-
-	// TODO: loginName
 
 	passwort: AbstractControl;
 
