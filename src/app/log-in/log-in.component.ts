@@ -34,8 +34,6 @@ export class LogInComponent implements OnInit, OnDestroy {
 
 	kleber: AbstractControl;
 
-	submitDisabled: true;
-
 	showClientId: boolean;
 
 	private redirectUrl = '';
@@ -127,6 +125,10 @@ export class LogInComponent implements OnInit, OnDestroy {
 		this.logger.debug(JSON.stringify(loginCredentials));
 
 		this.userService.loginUser(loginCredentials);
+	}
+
+	gotoOrderTempPwd(): void {
+		this.router.navigateByUrl('password/temp/order');
 	}
 
 	gotoSignUp(): void {

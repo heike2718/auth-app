@@ -16,7 +16,7 @@ Run `ng serve --port 4300` for a dev server. Navigate to `http://localhost:4300/
 
 __Change TempPassword__
 
-	http://localhost:4300/temppwd?tokenId=jsgdgggAXO
+	http://localhost:4300/password/temp/change?tokenId=jsgdgggAXO
 
 __SignUp__
 
