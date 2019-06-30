@@ -14,17 +14,23 @@ Run `ng serve --port 4300` for a dev server. Navigate to `http://localhost:4300/
 
 ## Devtest- URL (Abkürzung)
 
+
+__Foregot-Password zum Testen__
+
+Siehe LogIn-Url
+
+
 __Change TempPassword__
 
-	http://localhost:4300/password/temp/change?tokenId=jsgdgggAXO
+	http://localhost:4300/#/password/temp/change?tokenId=9776ed70-8b7e-4f7e-bb3e-52710dd3bb04&redirectUrl=localhost:4200
 
 __SignUp__
 
-	http://localhost:4300/signup?clientId=WLJLH4vsldWapZrMZi2U5HKRBVpgyUiRTWwX7aiJd8nX&redirectUrl=http:%2F%2Flocalhost:4200
+	http://localhost:4300/#/signup?clientId=WLJLH4vsldWapZrMZi2U5HKRBVpgyUiRTWwX7aiJd8nX&redirectUrl=http:%2F%2Flocalhost:4200
 
 __LogIn__
 
-	http://localhost:4300/login?clientId=WLJLH4vsldWapZrMZi2U5HKRBVpgyUiRTWwX7aiJd8nX&redirectUrl=http:%2F%2Flocalhost:4200
+	http://localhost:4300/#/login?clientId=WLJLH4vsldWapZrMZi2U5HKRBVpgyUiRTWwX7aiJd8nX&redirectUrl=http:%2F%2Flocalhost:4200#/listen
 
 ## Notizen (chronologisch absteigend)
 
