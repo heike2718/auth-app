@@ -5,13 +5,12 @@ import { AppConstants } from '../shared/app.constants';
 import { Logger } from '@nsalaun/ng-logger';
 import { Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { ClientInformation, ClientCredentials, createQueryParameters } from '../shared/model/client-information';
+import { ClientInformation, ClientCredentials, createQueryParameters, RegistrationCredentials } from '../shared/model/auth-model';
 import { ClientService } from '../services/client.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { UserService } from '../services/user.service';
 import { AppData } from '../shared/app-data.service';
-import { RegistrationCredentials } from '../shared/model/registration-credentials';
 import { MessagesService } from 'hewi-ng-lib';
 
 @Component({

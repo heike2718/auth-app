@@ -3,6 +3,7 @@ import { LogInComponent } from './log-in/log-in.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { ErrorComponent } from './error/error.component';
 import { TempPasswordComponent } from './temp-password/temp-password.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 export const routerConfig: Routes = [
 	{
@@ -14,7 +15,11 @@ export const routerConfig: Routes = [
 		component: SignUpComponent
 	},
 	{
-		path: 'temppwd',
+		path: 'password/temp/order',
+		component: ForgotPasswordComponent
+	},
+	{
+		path: 'password/temp/change',
 		component: TempPasswordComponent
 	},
 	{
