@@ -22,7 +22,7 @@ Siehe LogIn-Url
 
 __Change TempPassword__
 
-	http://localhost:4300/#/password/temp/change?tokenId=9776ed70-8b7e-4f7e-bb3e-52710dd3bb04&redirectUrl=localhost:4200
+	http://localhost:4300/#/password/temp/change?tokenId=9776ed70-8b7e-4f7e-bb3e-52710dd3bb04&clientId=yxvhkcshl&redirectUrl=localhost:4200
 
 __SignUp__
 

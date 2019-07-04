@@ -20,6 +20,7 @@ import { NgLoggerModule, Level } from '@nsalaun/ng-logger';
 import { environment } from '../environments/environment';
 import { TempPasswordComponent } from './temp-password/temp-password.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { HomeComponent } from './home/home.component';
 
 // Set different log level depending on environment.
 let LOG_LEVEL = Level.ERROR;
@@ -36,7 +37,8 @@ if (!environment.production) {
 		LogInComponent,
 		ErrorComponent,
 		TempPasswordComponent,
-		ForgotPasswordComponent
+		ForgotPasswordComponent,
+		HomeComponent
 	],
 	imports: [
 		BrowserModule,
