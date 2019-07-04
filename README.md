@@ -34,6 +34,7 @@ __LogIn__
 
 ## Notizen (chronologisch absteigend)
 
+* __Release 1.3.0:__ handle foregot password
 * __Release 1.2.0:__ provide surename and given name
 * __Release 1.1.3:__ small devices: less content and smaller font-sizes, forms nerarer to top of page
 * __Release 1.1.2:__ fix-fstream-cve
