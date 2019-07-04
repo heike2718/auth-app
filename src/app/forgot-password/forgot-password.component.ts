@@ -6,6 +6,7 @@ import { Logger } from '@nsalaun/ng-logger';
 import { HttpErrorService } from '../error/http-error.service';
 import { MessagesService } from 'hewi-ng-lib';
 import { AppData } from '../shared/app-data.service';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'auth-forgot-password',
@@ -32,7 +33,8 @@ export class ForgotPasswordComponent implements OnInit {
 		, private httpErrorService: HttpErrorService
 		, private messagesService: MessagesService
 		, private appData: AppData
-		, private logger: Logger) {
+		, private logger: Logger
+		, private router: Router) {
 
 		this.orderPwdForm = this.fb.group({
 			'email': ['', [Validators.required]],
@@ -88,4 +90,10 @@ export class ForgotPasswordComponent implements OnInit {
 			() => this.logger.debug('post call completed')
 		);
 	}
+
+	closeModal(): void {
+		this.showMessage = false;
+		this.router.navigateByUrl('/home');
+	}
+
 }

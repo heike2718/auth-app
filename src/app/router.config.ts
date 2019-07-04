@@ -4,8 +4,13 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { ErrorComponent } from './error/error.component';
 import { TempPasswordComponent } from './temp-password/temp-password.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { HomeComponent } from './home/home.component';
 
 export const routerConfig: Routes = [
+	{
+		path: 'home',
+		component: HomeComponent
+	},
 	{
 		path: 'login',
 		component: LogInComponent
