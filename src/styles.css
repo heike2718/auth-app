@@ -1,18 +1,26 @@
 * {
-  /** box content wird automatisch so berechnet, dass width und height konstant bleiben */
-  box-sizing: border-box;
+	/** box content wird automatisch so berechnet, dass width und height konstant bleiben */
+	box-sizing: border-box;
 }
 
 html,
 body {
-  height: 100%;
+	height: 100%;
 }
 
 body {
-  margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 1.2rem;
-  background-color: #FAFBFC;
+	margin: 0;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 1.2rem;
+	background-color: #FAFBFC;
+}
+
+h3 {
+	font-size: 1.3rem;
+}
+
+button {
+	cursor: pointer;
 }
 
 .kleber {
@@ -21,45 +29,74 @@ body {
 }
 
 .header-3 {
-  margin: 0 10px 0 15px;
-  font-size: 1.75rem;
+	margin: 0 10px 0 15px;
+	font-size: 1.75rem;
 }
 
 .page {
-  margin: 10px;
-  padding: 10px;
-  background-color: white;
-  border: 1pt solid;
-  border-color: #D1D5DA;
-  border-radius: 5px;
+	margin: 10px;
+	padding: 10px;
+	background-color: white;
+	border: 1pt solid;
+	border-color: #D1D5DA;
+	border-radius: 5px;
 }
 
 .hinweis {
-  margin: 10px 5px 10px 5px;
-  padding: 5px;
-  font-size: 1.5rem;
-  font-style: bold;
-  background-color: #FAFBFC;
-  border: 2pt solid;
-  border-color: #FCA326;
-  border-radius: 5px;
+	margin: 10px 5px 10px 5px;
+	padding: 5px;
+	font-size: 1.5rem;
+	font-style: bold;
+	background-color: #FAFBFC;
+	border: 2pt solid;
+	border-color: #FCA326;
+	border-radius: 5px;
 }
 
+.dialog {
+	margin: 10px 5px 10px 5px;
+	padding: 25px;
+	width: 50%;
+	border: 1px solid gray;
+	border-radius: 4px;
+	background: white;
+	box-shadow: 0 1px 16px 0 rgba(0, 0, 0, 0.2), 0 2px 8px 0 rgba(0, 0, 0, 0.14), 0 4px 8px -1px rgba(0, 0, 0, 0.12);
+}
+
+.btn-container {
+	margin: 10px 0 10px 0;
+}
+
+.btn-wrapper {
+	margin-bottom: 10px;
+}
+
+
 footer {
-  position: relative;
-  margin-top: 250px;
+	position: relative;
+	margin-top: 250px;
 }
 
 /* ===== small devices ==== */
 
 @media (max-width: 768px) {
-  .h4, body  {
-    font-size: 1rem;
-  }
-  .header-3, .hinweis  {
-    font-size: 1.2rem;
-  }
-  h2 {
-    font-size: 1.4rem;
-  }
+
+	.h4,
+	body {
+		font-size: 1rem;
+	}
+
+	.header-3,
+	.hinweis {
+		font-size: 1.2rem;
+	}
+
+	h2 {
+		font-size: 1.4rem;
+	}
+
+	.dialog {
+		width: 100%;
+	}
+
 }

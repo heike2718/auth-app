@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, AbstractControl, Validators, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, AbstractControl, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { ClientInformation, ClientCredentials, createQueryParameters } from '../shared/model/client-information';
+import { ClientInformation, ClientCredentials, createQueryParameters, LoginCredentials } from '../shared/model/auth-model';
 import { ClientService } from '../services/client.service';
 import { UserService } from '../services/user.service';
 import { AppData } from '../shared/app-data.service';
@@ -10,7 +10,6 @@ import { MessagesService } from 'hewi-ng-lib';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { Logger } from '@nsalaun/ng-logger';
-import { LoginCredentials } from '../shared/model/login-credentials';
 import { passwortValidator } from '../shared/validation/app.validators';
 
 @Component({
@@ -30,13 +29,9 @@ export class LogInComponent implements OnInit, OnDestroy {
 
 	loginName: AbstractControl;
 
-	// TODO: loginName
-
 	passwort: AbstractControl;
 
 	kleber: AbstractControl;
-
-	submitDisabled: true;
 
 	showClientId: boolean;
 
@@ -129,6 +124,10 @@ export class LogInComponent implements OnInit, OnDestroy {
 		this.logger.debug(JSON.stringify(loginCredentials));
 
 		this.userService.loginUser(loginCredentials);
+	}
+
+	gotoOrderTempPwd(): void {
+		this.router.navigateByUrl('password/temp/order');
 	}
 
 	gotoSignUp(): void {

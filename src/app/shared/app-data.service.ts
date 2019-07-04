@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ClientInformation, ClientCredentials } from './model/client-information';
+import { ClientInformation, ClientCredentials } from './model/auth-model';
 import { filter } from 'rxjs/operators';
 import * as _ from 'lodash';
 
@@ -15,10 +15,11 @@ export class AppData {
 		zurueckText: 'zurück',
 		agbUrl: '',
 		loginnameSupported: false,
-		namenRequired: false
+		namenRequired: false,
+		baseUrl: null
 	});
 
-	private clientCredentialsSubject = new BehaviorSubject<ClientCredentials>(undefined);
+	clientCredentialsSubject = new BehaviorSubject<ClientCredentials>(undefined);
 
 	private redirectUrlSubject = new BehaviorSubject<string>('');
 

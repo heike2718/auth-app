@@ -18,6 +18,9 @@ import { HewiNgLibModule } from 'hewi-ng-lib';
 
 import { NgLoggerModule, Level } from '@nsalaun/ng-logger';
 import { environment } from '../environments/environment';
+import { TempPasswordComponent } from './temp-password/temp-password.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { HomeComponent } from './home/home.component';
 
 // Set different log level depending on environment.
 let LOG_LEVEL = Level.ERROR;
@@ -32,7 +35,10 @@ if (!environment.production) {
 		FormErrorComponent,
 		SignUpComponent,
 		LogInComponent,
-		ErrorComponent
+		ErrorComponent,
+		TempPasswordComponent,
+		ForgotPasswordComponent,
+		HomeComponent
 	],
 	imports: [
 		BrowserModule,

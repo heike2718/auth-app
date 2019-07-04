@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { RegistrationCredentials } from '../shared/model/registration-credentials';
+import { RegistrationCredentials } from '../shared/model/auth-model';
 import { HttpErrorService } from '../error/http-error.service';
 import { environment } from '../../environments/environment';
 import { createHash } from '../shared/model/auth-response-data';
@@ -8,7 +8,7 @@ import { map, publishLast, refCount, tap } from 'rxjs/operators';
 import { ResponsePayload } from 'hewi-ng-lib';
 import { AppData } from '../shared/app-data.service';
 import { Logger } from '@nsalaun/ng-logger';
-import { LoginCredentials } from '../shared/model/login-credentials';
+import { LoginCredentials } from '../shared/model/auth-model';
 
 @Injectable({
 	providedIn: 'root'
