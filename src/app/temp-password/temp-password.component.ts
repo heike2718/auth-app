@@ -9,7 +9,7 @@ import { AppConstants } from '../shared/app.constants';
 import { TempPasswordService } from '../services/temp-password.service';
 import { HttpErrorService } from '../error/http-error.service';
 import { MessagesService } from 'hewi-ng-lib';
-import { ChangeTempPasswordPayload, ClientCredentials, ClientInformation } from '../shared/model/auth-model';
+import { ChangeTempPasswordPayload, ClientCredentials, ClientInformation, TwoPasswords } from '../shared/model/auth-model';
 import { AppData } from '../shared/app-data.service';
 import { ClientService } from '../services/client.service';
 
@@ -144,12 +144,17 @@ export class TempPasswordComponent implements OnInit, OnDestroy {
 		const _email = this.email.value ? this.email.value.trim() : null;
 		const _tempPassword = this.tempPassword.value ? this.tempPassword.value.trim() : null;
 
+		const _twoPasswords: TwoPasswords = {
+			'passwort': this.passwort.value,
+			'passwortWdh': this.passwortWdh.value
+		};
+
 		const credentials: ChangeTempPasswordPayload = {
 			'tokenId': this.tokenId,
 			'tempPassword': _tempPassword,
 			'email': _email,
-			'passwort': this.passwort.value,
-			'passwortWdh': this.passwortWdh.value
+			'twoPasswords': _twoPasswords
+
 		};
 
 		const response$ = this.tempPwdService.changeTempPassword(credentials);
