@@ -13,11 +13,20 @@ export interface ClientInformation {
 	baseUrl: string;
 }
 
-export interface LoginCredentials {
+export interface AuthorizationCredentials {
 	loginName: string;
 	passwort: string;
 	kleber: string;
+}
+
+export interface LoginCredentials {
+	authorizationCredentials: AuthorizationCredentials;
 	clientCredentials: ClientCredentials;
+}
+
+export interface TwoPasswords {
+	passwort: string;
+	passwortWdh: string;
 }
 
 export interface RegistrationCredentials {
@@ -26,9 +35,8 @@ export interface RegistrationCredentials {
 	loginName: string;
 	vorname?: string;
 	nachname?: string;
-	passwort: string;
-	passwortWdh: string;
 	agbGelesen: boolean;
+	twoPasswords: TwoPasswords;
 	kleber: string;
 	clientCredentials: ClientCredentials;
 
@@ -46,11 +54,8 @@ export interface ChangeTempPasswordPayload {
 	tokenId: string;
 	tempPassword: string;
 	email: string;
-	passwort: string;
-	passwortWdh: string;
+	twoPasswords: TwoPasswords;
 }
-
-
 
 export function createQueryParameters(clientCredentials: ClientCredentials) {
 	return '?clientId=' + clientCredentials.clientId + '&redirectUrl=' + clientCredentials.redirectUrl;

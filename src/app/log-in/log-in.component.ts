@@ -2,7 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, AbstractControl, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { ClientInformation, ClientCredentials, createQueryParameters, LoginCredentials } from '../shared/model/auth-model';
+import { ClientInformation, ClientCredentials, LoginCredentials, AuthorizationCredentials } from '../shared/model/auth-model';
+import { createQueryParameters } from '../shared/model/auth-model';
 import { ClientService } from '../services/client.service';
 import { UserService } from '../services/user.service';
 import { AppData } from '../shared/app-data.service';
@@ -114,10 +115,14 @@ export class LogInComponent implements OnInit, OnDestroy {
 
 		this.messagesService.clear();
 
-		const loginCredentials: LoginCredentials = {
+		const authCredentials: AuthorizationCredentials = {
 			loginName: this.loginName ? this.loginName.value.trim() : null,
 			passwort: this.passwort.value,
-			kleber: this.kleber ? this.kleber.value : null,
+			kleber: this.kleber ? this.kleber.value : null
+		};
+
+		const loginCredentials: LoginCredentials = {
+			authorizationCredentials: authCredentials,
 			clientCredentials: this.clientCredentials,
 		};
 

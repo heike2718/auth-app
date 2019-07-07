@@ -5,7 +5,7 @@ import { AppConstants } from '../shared/app.constants';
 import { Logger } from '@nsalaun/ng-logger';
 import { Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { ClientInformation, ClientCredentials, createQueryParameters, RegistrationCredentials } from '../shared/model/auth-model';
+import { ClientInformation, ClientCredentials, createQueryParameters, RegistrationCredentials, TwoPasswords } from '../shared/model/auth-model';
 import { ClientService } from '../services/client.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../environments/environment';
@@ -158,6 +158,11 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
 		this.messagesService.clear();
 
+		const twoPasswords: TwoPasswords = {
+			passwort: this.passwort.value,
+			passwortWdh: this.passwortWdh.value
+		}
+
 		const registrationCredentials: RegistrationCredentials = {
 			agbGelesen: this.agbGelesen.value,
 			clientCredentials: this.clientCredentials,
@@ -167,8 +172,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
 			nachname: this.nachname ? this.nachname.value.trim() : null,
 			// wenn man den loginnamen nicht setzen kann, wird die Mailadresse verwendet.
 			loginName: this.loginName ? this.loginName.value.trim() : this.email.value.trim(),
-			passwort: this.passwort.value,
-			passwortWdh: this.passwortWdh.value
+			twoPasswords: twoPasswords
 		};
 
 		this.logger.debug(JSON.stringify(registrationCredentials));
