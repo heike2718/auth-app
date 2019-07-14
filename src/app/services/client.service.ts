@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { publishLast, refCount } from 'rxjs/operators';
 import { HttpErrorService } from '../error/http-error.service';
-import { Logger } from '@nsalaun/ng-logger';
 import { environment } from '../../environments/environment';
 import { AppData } from '../shared/app-data.service';
 import { ClientCredentials, createQueryParameters } from '../shared/model/auth-model';
@@ -14,7 +13,7 @@ import { ResponsePayload } from 'hewi-ng-lib';
 })
 export class ClientService {
 
-	constructor(private http: HttpClient, private httpErrorService: HttpErrorService, private logger: Logger, private appData: AppData) { }
+	constructor(private http: HttpClient, private httpErrorService: HttpErrorService, private appData: AppData) { }
 
 	getClient(clientCredentials: ClientCredentials): void {
 

@@ -59,7 +59,7 @@ export class ForgotPasswordComponent implements OnInit {
 		const _kleber = this.kleber.value ? this.kleber.value : null;
 
 		let _clientCreds = this.clientCredentials;
-		if (!this.clientCredentials || this.clientCredentials.clientId === 'undefined') {
+		if (!this.clientCredentials || this.clientCredentials.accessToken === 'undefined') {
 			_clientCreds = null;
 		}
 
