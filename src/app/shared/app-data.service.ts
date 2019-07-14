@@ -10,7 +10,6 @@ import * as _ from 'lodash';
 export class AppData {
 
 	private clientInformationSubject = new BehaviorSubject<ClientInformation>({
-		clientId: 'unbekannt',
 		name: '',
 		zurueckText: 'zurück',
 		agbUrl: '',
@@ -25,7 +24,7 @@ export class AppData {
 
 	clientInformation$: Observable<ClientInformation> =
 		this.clientInformationSubject.asObservable().pipe(
-			filter(client => client.clientId !== 'unbekannt')
+			filter(client => client.name !== undefined)
 		);
 
 	clientCredentials$: Observable<ClientCredentials> =

@@ -131,26 +131,20 @@ export class SignUpComponent implements OnInit, OnDestroy {
 	}
 
 	private loadClientInformation() {
-		let clientId = 'undefined';
-		let redirectUrl = 'undefined';
 
-		this.route.queryParams.pipe(
+		this.redirectSubscription = this.route.queryParams.pipe(
 			filter(params => params.clientId || params.redirectUrl)
 		).subscribe(
 			params => {
-				clientId = params.clientId;
-				redirectUrl = params.redirectUrl;
+				this.clientCredentials = {
+					accessToken: params.accessToken,
+					redirectUrl: params.redirectUrl,
+					state: params.state
+				};
+				this.appData.updateClientCredentials(this.clientCredentials);
+				this.clientService.getClient(this.clientCredentials);
 			}
 		);
-
-		if (clientId !== 'undefined') {
-			this.clientCredentials = {
-				clientId: clientId,
-				redirectUrl: redirectUrl
-			};
-			this.appData.updateClientCredentials(this.clientCredentials);
-			this.clientService.getClient(this.clientCredentials);
-		}
 	}
 
 	submitUser(): void {
@@ -161,7 +155,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
 		const twoPasswords: TwoPasswords = {
 			passwort: this.passwort.value,
 			passwortWdh: this.passwortWdh.value
-		}
+		};
 
 		const registrationCredentials: RegistrationCredentials = {
 			agbGelesen: this.agbGelesen.value,

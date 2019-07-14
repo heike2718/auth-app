@@ -10,8 +10,6 @@ import { TempPasswordService } from '../services/temp-password.service';
 import { HttpErrorService } from '../error/http-error.service';
 import { MessagesService } from 'hewi-ng-lib';
 import { ChangeTempPasswordPayload, ClientCredentials, ClientInformation, TwoPasswords } from '../shared/model/auth-model';
-import { AppData } from '../shared/app-data.service';
-import { ClientService } from '../services/client.service';
 
 @Component({
 	selector: 'auth-temp-password',
@@ -24,11 +22,7 @@ export class TempPasswordComponent implements OnInit, OnDestroy {
 
 	private tokenId: string;
 
-	private clientId: string;
-
-	private redirectUrl: string;
-
-	private clientCredentials: ClientCredentials;
+	private clientInformation: ClientInformation;
 
 	changePwdForm: FormGroup;
 
@@ -50,8 +44,6 @@ export class TempPasswordComponent implements OnInit, OnDestroy {
 
 	zurueckText: string;
 
-	private clientInformationSubscription: Subscription;
-
 	private queryParamsSubscription: Subscription;
 
 	constructor(private fb: FormBuilder,
@@ -59,8 +51,6 @@ export class TempPasswordComponent implements OnInit, OnDestroy {
 		private tempPwdService: TempPasswordService,
 		private httpErrorService: HttpErrorService,
 		private messagesService: MessagesService,
-		private clientService: ClientService,
-		private appData: AppData,
 		private route: ActivatedRoute,
 		private router: Router) {
 
@@ -86,15 +76,6 @@ export class TempPasswordComponent implements OnInit, OnDestroy {
 
 	ngOnInit() {
 
-
-		// /password/temp/change?tokenId=16831f52-92e2-4515-983c-72fd18d0dc2c&redirectUrl=localhost:4200
-
-		this.clientInformationSubscription = this.appData.clientInformation$.subscribe(
-			clientInfo => {
-				this.zurueckText = clientInfo.zurueckText;
-			}
-		);
-
 		this.queryParams$ = this.route.queryParams;
 
 		this.queryParamsSubscription = this.queryParams$.pipe(
@@ -102,39 +83,20 @@ export class TempPasswordComponent implements OnInit, OnDestroy {
 		).subscribe(
 			params => {
 				this.tokenId = params.tokenId;
-				this.clientId = params.clientId;
-				this.redirectUrl = params.redirectUrl;
 
 				if (!this.tokenId || this.tokenId === 'undefined') {
 					this.showChangePasswordResult = true;
 					// tslint:disable-next-line:max-line-length
 					this.message = 'Der aufgerufene Link ist ungültig. Bitte kopieren Sie den Link vollständig oder klicken Sie ihn nochmals an. Falls das nicht hilft, senden Sie bitte eine Mail an mathe@egladil.de.';
 				}
-
-				this.loadClientInformation();
 			}
 		);
-	}
-
-	private loadClientInformation() {
-
-		if (this.clientId && this.redirectUrl) {
-			this.clientCredentials = {
-				clientId: this.clientId,
-				redirectUrl: this.redirectUrl
-			};
-			this.appData.updateClientCredentials(this.clientCredentials);
-			this.clientService.getClient(this.clientCredentials);
-		}
 	}
 
 
 	ngOnDestroy() {
 		if (this.queryParamsSubscription) {
 			this.queryParamsSubscription.unsubscribe();
-		}
-		if (this.clientInformationSubscription) {
-			this.clientInformationSubscription.unsubscribe();
 		}
 	}
 
@@ -165,6 +127,11 @@ export class TempPasswordComponent implements OnInit, OnDestroy {
 
 				if (level === 'INFO') {
 					this.showChangePasswordResult = true;
+					if (payload.data) {
+						this.clientInformation = payload.data;
+						this.zurueckText = this.clientInformation.zurueckText;
+					}
+
 				} else {
 					this.showChangePasswordResult = false;
 					this.messagesService.error(payload.message.message);
@@ -178,16 +145,21 @@ export class TempPasswordComponent implements OnInit, OnDestroy {
 	}
 
 	canRedirect(): boolean {
-		return this.redirectUrl && this.redirectUrl !== 'undefined';
+		return this.clientInformation !== undefined;
 	}
 
 	closeModal(): void {
+		this.showChangePasswordResult = false;
 		if (this.canRedirect()) {
-			window.location.href = this.redirectUrl;
+			this.sendRedirect();
 		} else {
-			this.showChangePasswordResult = false;
 			this.router.navigateByUrl('/home');
 		}
+	}
+
+
+	private sendRedirect(): void {
+		window.location.href = this.clientInformation.baseUrl;
 	}
 }
 

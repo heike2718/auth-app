@@ -1,10 +1,11 @@
 export interface ClientCredentials {
-	clientId: string;
+	accessToken: string;
 	redirectUrl: string;
+	state: string;
 }
 
 export interface ClientInformation {
-	clientId: string;
+	// clientId: string;
 	name: string;
 	zurueckText: string;
 	agbUrl: string;
@@ -23,6 +24,9 @@ export interface LoginCredentials {
 	authorizationCredentials: AuthorizationCredentials;
 	clientCredentials: ClientCredentials;
 }
+
+
+
 
 export interface TwoPasswords {
 	passwort: string;
@@ -58,7 +62,7 @@ export interface ChangeTempPasswordPayload {
 }
 
 export function createQueryParameters(clientCredentials: ClientCredentials) {
-	return '?clientId=' + clientCredentials.clientId + '&redirectUrl=' + clientCredentials.redirectUrl;
+	return '?accessToken=' + clientCredentials.accessToken + '&redirectUrl=' + clientCredentials.redirectUrl + '&state=' + '';
 }
 
 

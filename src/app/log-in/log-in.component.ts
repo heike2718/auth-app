@@ -88,26 +88,20 @@ export class LogInComponent implements OnInit, OnDestroy {
 	}
 
 	private loadClientInformation() {
-		let clientId = 'undefined';
-		let redirectUrl = 'undefined';
 
 		this.redirectSubscription = this.route.queryParams.pipe(
 			filter(params => params.clientId || params.redirectUrl)
 		).subscribe(
 			params => {
-				clientId = params.clientId;
-				redirectUrl = params.redirectUrl;
+				this.clientCredentials = {
+					accessToken: params.accessToken,
+					redirectUrl: params.redirectUrl,
+					state: params.state
+				};
+				this.appData.updateClientCredentials(this.clientCredentials);
+				this.clientService.getClient(this.clientCredentials);
 			}
 		);
-
-		if (clientId !== 'undefined') {
-			this.clientCredentials = {
-				clientId: clientId,
-				redirectUrl: redirectUrl
-			};
-			this.appData.updateClientCredentials(this.clientCredentials);
-			this.clientService.getClient(this.clientCredentials);
-		}
 	}
 
 	submit(): void {
