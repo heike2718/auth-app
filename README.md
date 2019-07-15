@@ -2,8 +2,6 @@
 
 Frontend für authprovider.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.0.6.
-
 ## Dependencies
 
 Benötigt hewi-ng-lib: npm install hewi-ng-lib
@@ -26,14 +24,15 @@ __Change TempPassword__
 
 __SignUp__
 
-	http://localhost:4300/#/signup?clientId=WLJLH4vsldWapZrMZi2U5HKRBVpgyUiRTWwX7aiJd8nX&redirectUrl=http:%2F%2Flocalhost:4200
+	http://localhost:4300/#/signup?accessToken=dsgiguig&state=signup
 
 __LogIn__
 
-	http://localhost:4300/#/login?clientId=WLJLH4vsldWapZrMZi2U5HKRBVpgyUiRTWwX7aiJd8nX&redirectUrl=http:%2F%2Flocalhost:4200#/listen
+	http://localhost:4300/#/login?accessToken=vhakvv&redirectUrl=http:%2F%2Flocalhost:4200#/listen
 
 ## Notizen (chronologisch absteigend)
 
+* __Release 2.0.0:__ (nicht abwärtskompatibel) Clients müssen statt der clientID ein gültiges accessToken mitgeben (siehe URLs oben)
 * __Release 1.3.0:__ handle foregot password
 * __Release 1.2.0:__ provide surename and given name
 * __Release 1.1.3:__ small devices: less content and smaller font-sizes, forms nerarer to top of page
