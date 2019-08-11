@@ -32,6 +32,7 @@ __LogIn__
 
 ## Notizen (chronologisch absteigend)
 
+* __Release 3.0.0:__ (nicht abwärtskompatibel) Signatur JWTPayload hat sich geändert, clients. kein refreshToken mehr erforderlich - redirect url geändert
 * __Release 2.0.0:__ (nicht abwärtskompatibel) Clients müssen statt der clientID ein gültiges accessToken mitgeben (siehe URLs oben)
 * __Release 1.3.0:__ handle foregot password
 * __Release 1.2.0:__ provide surename and given name
