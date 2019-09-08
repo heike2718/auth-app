@@ -7,7 +7,9 @@ export const environment = {
   version: '3.0.0',
   envName: 'Development',
   apiUrl: 'http://localhost:9000/authprovider',
-  assetsUrl: 'assets'
+  assetsUrl: 'assets',
+  consoleLogActive: true,
+  serverLogActive: true
 };
 
 /*

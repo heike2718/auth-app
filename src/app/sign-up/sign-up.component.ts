@@ -5,6 +5,7 @@ import { AppConstants } from '../shared/app.constants';
 import { Logger } from '@nsalaun/ng-logger';
 import { Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
+// tslint:disable-next-line: max-line-length
 import { ClientInformation, ClientCredentials, createQueryParameters, RegistrationCredentials, TwoPasswords } from '../shared/model/auth-model';
 import { ClientService } from '../services/client.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -25,6 +26,8 @@ export class SignUpComponent implements OnInit, OnDestroy {
 	redirectUrl$: Observable<string>;
 
 	private clientCredentials: ClientCredentials;
+
+	private groups: string;
 
 	signUpForm: FormGroup;
 
@@ -141,6 +144,11 @@ export class SignUpComponent implements OnInit, OnDestroy {
 					redirectUrl: params.redirectUrl,
 					state: params.state
 				};
+				if (params.groups) {
+					this.groups = params.groups;
+				} else {
+					this.groups = 'USER';
+				}
 				this.appData.updateClientCredentials(this.clientCredentials);
 				this.clientService.getClient(this.clientCredentials);
 			}
@@ -164,6 +172,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
 			kleber: this.kleber ? this.kleber.value : null,
 			vorname: this.vorname ? this.vorname.value.trim() : null,
 			nachname: this.nachname ? this.nachname.value.trim() : null,
+			groups: this.groups,
 			// wenn man den loginnamen nicht setzen kann, wird die Mailadresse verwendet.
 			loginName: this.loginName ? this.loginName.value.trim() : this.email.value.trim(),
 			twoPasswords: twoPasswords
