@@ -7,7 +7,9 @@ export const environment = {
 	version: '3.0.0',
 	envName: 'Test',
 	apiUrl: 'http://localhost:9000/authprovider',
-	assetsUrl: 'auth-app/assets'
+	assetsUrl: 'auth-app/assets',
+	consoleLogActive: false,
+	serverLogActive: true
 };
 
 /*
