@@ -145,9 +145,9 @@ export class SignUpComponent implements OnInit, OnDestroy {
 					state: params.state
 				};
 				if (params.groups) {
-					this.groups = params.groups;
+					this.groups = params.groups + ',STANDARD';
 				} else {
-					this.groups = 'USER';
+					this.groups = 'STANDARD';
 				}
 				this.appData.updateClientCredentials(this.clientCredentials);
 				this.clientService.getClient(this.clientCredentials);
