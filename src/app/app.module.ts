@@ -46,7 +46,7 @@ if (!environment.production) {
 		RouterModule.forRoot(routerConfig, { useHash: true }),
 		FormsModule,
 		HttpClientModule,
-		NgbModule.forRoot(),
+		NgbModule,
 		ReactiveFormsModule,
 		HewiNgLibModule,
 		NgLoggerModule.forRoot(LOG_LEVEL),
