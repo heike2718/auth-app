@@ -32,6 +32,7 @@ __LogIn__
 
 ## Notizen (chronologisch absteigend)
 
+* __Release 3.2.1:__ migrated to angular 8
 * __Release 3.1.0:__ default role heißt jetzt STANDARD, statt USER
 * __Release 3.0.0:__ (nicht abwärtskompatibel) Signatur JWTPayload hat sich geändert, clients. kein refreshToken mehr erforderlich - redirect url geändert
 * __Release 2.0.0:__ (nicht abwärtskompatibel) Clients müssen statt der clientID ein gültiges accessToken mitgeben (siehe URLs oben)
