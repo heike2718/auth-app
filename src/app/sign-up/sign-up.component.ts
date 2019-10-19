@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, AbstractControl, Validators, FormControl } from '@angular/forms';
 import { emailValidator, passwortValidator, passwortPasswortWiederholtValidator } from '../shared/validation/app.validators';
 import { AppConstants } from '../shared/app.constants';
-import { Logger } from '@nsalaun/ng-logger';
 import { Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 // tslint:disable-next-line: max-line-length
@@ -12,7 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { UserService } from '../services/user.service';
 import { AppData } from '../shared/app-data.service';
-import { MessagesService } from 'hewi-ng-lib';
+import { MessagesService, LogService } from 'hewi-ng-lib';
 
 @Component({
 	selector: 'auth-sign-up',
@@ -66,7 +65,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
 		private userService: UserService,
 		private appData: AppData,
 		private messagesService: MessagesService,
-		private logger: Logger,
+		private logger: LogService,
 		private router: Router,
 		private route: ActivatedRoute) {
 

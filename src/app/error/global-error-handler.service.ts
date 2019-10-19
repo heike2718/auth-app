@@ -1,15 +1,14 @@
 import { Injectable, ErrorHandler, Injector } from '@angular/core';
 // import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Logger } from '@nsalaun/ng-logger';
 import { LogService, MessagesService } from 'hewi-ng-lib';
 import { LogPublishersService } from '../logger/log-publishers.service';
+import { environment } from 'src/environments/environment.qs';
 
 @Injectable()
 export class GlobalErrorHandler implements ErrorHandler {
 
 	private logService: LogService;
-	private logger: Logger;
 
 
 	constructor(private injector: Injector) {
@@ -18,9 +17,9 @@ export class GlobalErrorHandler implements ErrorHandler {
 		// so dass man benötigte Services nicht im Konstruktor injekten kann !!!
 		const logPublishersService = this.injector.get(LogPublishersService);
 		this.logService = this.injector.get(LogService);
-		this.logService.registerPublishers(logPublishersService.publishers);
 
-		this.logger = this.injector.get(Logger);
+		this.logService.initLevel(environment.loglevel);
+		this.logService.registerPublishers(logPublishersService.publishers);
 	}
 
 	handleError(error: any): void {
@@ -34,9 +33,9 @@ export class GlobalErrorHandler implements ErrorHandler {
 		this.logService.error(message, 'auth-app');
 
 		if (error instanceof HttpErrorResponse) {
-			this.logger.debug('das sollte nicht vorkommen, da diese Errors vom ChecklistenService behandelt werden');
+			this.logService.debug('das sollte nicht vorkommen, da diese Errors vom ChecklistenService behandelt werden');
 		} else {
-			this.logger.error('Unerwarteter Fehler: ' + error.message);
+			this.logService.error('Unerwarteter Fehler: ' + error.message);
 		}
 
 		this.injector.get(MessagesService).error(message);
