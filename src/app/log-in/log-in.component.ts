@@ -7,10 +7,9 @@ import { createQueryParameters } from '../shared/model/auth-model';
 import { ClientService } from '../services/client.service';
 import { UserService } from '../services/user.service';
 import { AppData } from '../shared/app-data.service';
-import { MessagesService } from 'hewi-ng-lib';
+import { MessagesService, LogService } from 'hewi-ng-lib';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../environments/environment';
-import { Logger } from '@nsalaun/ng-logger';
 import { passwortValidator } from '../shared/validation/app.validators';
 
 @Component({
@@ -46,7 +45,7 @@ export class LogInComponent implements OnInit, OnDestroy {
 		private userService: UserService,
 		private appData: AppData,
 		private messagesService: MessagesService,
-		private logger: Logger,
+		private logger: LogService,
 		private router: Router,
 		private route: ActivatedRoute) {
 

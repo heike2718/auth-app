@@ -5,9 +5,8 @@ import { HttpErrorService } from '../error/http-error.service';
 import { environment } from '../../environments/environment';
 import { createHash } from '../shared/model/auth-response-data';
 import { map, publishLast, refCount, tap } from 'rxjs/operators';
-import { ResponsePayload } from 'hewi-ng-lib';
+import { ResponsePayload, LogService } from 'hewi-ng-lib';
 import { AppData } from '../shared/app-data.service';
-import { Logger } from '@nsalaun/ng-logger';
 import { LoginCredentials } from '../shared/model/auth-model';
 
 @Injectable({
@@ -15,7 +14,7 @@ import { LoginCredentials } from '../shared/model/auth-model';
 })
 export class UserService {
 
-	constructor(private http: HttpClient, private httpErrorService: HttpErrorService, private appData: AppData, private logger: Logger) { }
+	constructor(private http: HttpClient, private httpErrorService: HttpErrorService, private appData: AppData, private logger: LogService) { }
 
 	public registerUser(registrationCredentials: RegistrationCredentials): void {
 

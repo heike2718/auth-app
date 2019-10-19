@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { TempPasswordCredentials, ChangeTempPasswordPayload } from '../shared/model/auth-model';
-import { Logger } from '@nsalaun/ng-logger';
 import { map, publishLast, refCount, tap } from 'rxjs/operators';
-import { ResponsePayload } from 'hewi-ng-lib';
+import { ResponsePayload, LogService } from 'hewi-ng-lib';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
@@ -16,7 +15,7 @@ export class TempPasswordService {
 
 
 	constructor(private http: HttpClient
-		, private logger: Logger) { }
+		, private logger: LogService) { }
 
 	orderTempPassword(tempPasswordCredentials: TempPasswordCredentials): Observable<ResponsePayload> {
 

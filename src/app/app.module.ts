@@ -15,19 +15,9 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { FormErrorComponent } from './shared/components/form-error/form-error.component';
 import { HewiNgLibModule } from 'hewi-ng-lib';
 
-
-import { NgLoggerModule, Level } from '@nsalaun/ng-logger';
-import { environment } from '../environments/environment';
 import { TempPasswordComponent } from './temp-password/temp-password.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { HomeComponent } from './home/home.component';
-
-// Set different log level depending on environment.
-let LOG_LEVEL = Level.ERROR;
-if (!environment.production) {
-	LOG_LEVEL = Level.DEBUG;
-}
-
 
 @NgModule({
 	declarations: [
@@ -48,8 +38,7 @@ if (!environment.production) {
 		HttpClientModule,
 		NgbModule,
 		ReactiveFormsModule,
-		HewiNgLibModule,
-		NgLoggerModule.forRoot(LOG_LEVEL),
+		HewiNgLibModule
 	],
 	providers: [
 		GlobalErrorHandler,
