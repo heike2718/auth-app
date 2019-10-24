@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, AbstractControl, Validators } from '@angular/forms';
-import { Logger } from '@nsalaun/ng-logger';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -8,7 +7,7 @@ import { emailValidator, passwortValidator, passwortPasswortWiederholtValidator 
 import { AppConstants } from '../shared/app.constants';
 import { TempPasswordService } from '../services/temp-password.service';
 import { HttpErrorService } from '../error/http-error.service';
-import { MessagesService } from 'hewi-ng-lib';
+import { MessagesService, LogService } from 'hewi-ng-lib';
 import { ChangeTempPasswordPayload, ClientCredentials, ClientInformation, TwoPasswords } from '../shared/model/auth-model';
 
 @Component({
@@ -47,7 +46,7 @@ export class TempPasswordComponent implements OnInit, OnDestroy {
 	private queryParamsSubscription: Subscription;
 
 	constructor(private fb: FormBuilder,
-		private logger: Logger,
+		private logger: LogService,
 		private tempPwdService: TempPasswordService,
 		private httpErrorService: HttpErrorService,
 		private messagesService: MessagesService,

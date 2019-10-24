@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from '../environments/environment';
-import { Logger } from '@nsalaun/ng-logger';
+import { LogService } from 'hewi-ng-lib';
 
 @Component({
 	// tslint:disable-next-line:component-selector
@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
 	logo = environment.assetsUrl + '/mja_logo.png';
 	innerWidth: number;
 
-	constructor(private logger: Logger) { }
+	constructor(private logger: LogService) { }
 
 	ngOnInit() {
 		const location = window.location;

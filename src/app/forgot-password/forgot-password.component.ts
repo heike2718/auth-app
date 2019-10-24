@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, AbstractControl, Validators } from '@angular/forms';
 import { TempPasswordCredentials, ClientCredentials } from '../shared/model/auth-model';
 import { TempPasswordService } from '../services/temp-password.service';
-import { Logger } from '@nsalaun/ng-logger';
 import { HttpErrorService } from '../error/http-error.service';
-import { MessagesService } from 'hewi-ng-lib';
+import { MessagesService, LogService } from 'hewi-ng-lib';
 import { AppData } from '../shared/app-data.service';
 import { Router } from '@angular/router';
 
@@ -33,7 +32,7 @@ export class ForgotPasswordComponent implements OnInit {
 		, private httpErrorService: HttpErrorService
 		, private messagesService: MessagesService
 		, private appData: AppData
-		, private logger: Logger
+		, private logger: LogService
 		, private router: Router) {
 
 		this.orderPwdForm = this.fb.group({

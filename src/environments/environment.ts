@@ -9,7 +9,8 @@ export const environment = {
   apiUrl: 'http://localhost:9000/authprovider',
   assetsUrl: 'assets',
   consoleLogActive: true,
-  serverLogActive: true
+  serverLogActive: false,
+  loglevel: 1
 };
 
 /*

@@ -5,5 +5,6 @@ export const environment = {
 	apiUrl: 'https://opa-wetterwachs.de/authprovider',
 	assetsUrl: 'auth-app/assets',
 	consoleLogActive: false,
-	serverLogActive: true
+	serverLogActive: true,
+	loglevel: 4
 };
