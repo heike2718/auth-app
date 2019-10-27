@@ -24,7 +24,7 @@ export class ClientService {
 			refCount()
 		).subscribe(
 			(respPayload: ResponsePayload) => this.appData.updateClientInformation(respPayload.data),
-			error => this.httpErrorService.handleError(error, 'getClient')
+			error => this.httpErrorService.handleError(error, 'getClient', clientCredentials)
 		);
 	}
 }
