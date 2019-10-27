@@ -8,7 +8,7 @@ import { AppConstants } from '../shared/app.constants';
 import { TempPasswordService } from '../services/temp-password.service';
 import { HttpErrorService } from '../error/http-error.service';
 import { MessagesService, LogService } from 'hewi-ng-lib';
-import { ChangeTempPasswordPayload, ClientCredentials, ClientInformation, TwoPasswords } from '../shared/model/auth-model';
+import { ChangeTempPasswordPayload, ClientInformation, TwoPasswords } from '../shared/model/auth-model';
 
 @Component({
 	selector: 'auth-temp-password',
@@ -138,7 +138,7 @@ export class TempPasswordComponent implements OnInit, OnDestroy {
 				}
 
 			},
-			error => this.httpErrorService.handleError(error, 'orderTempPassword'),
+			error => this.httpErrorService.handleError(error, 'orderTempPassword', undefined),
 			() => this.logger.debug('post call completed')
 		);
 	}
