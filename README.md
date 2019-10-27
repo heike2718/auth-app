@@ -32,6 +32,7 @@ __LogIn__
 
 ## Notizen (chronologisch absteigend)
 
+* __Release 3.2.3:__ [Issue 6](https://github.com/heike2718/auth-app/issues/6)
 * __Release 3.2.2:__ logging framework replaced by hewi-ng-lib
 * __Release 3.2.1:__ migrated to angular 8
 * __Release 3.1.0:__ default role heißt jetzt STANDARD, statt USER
