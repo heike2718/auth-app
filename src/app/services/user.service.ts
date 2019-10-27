@@ -37,7 +37,7 @@ export class UserService {
 			payload => {
 				this.appData.updateRedirectUrl(redirectUrl + createHash(payload.data));
 			},
-			error => this.httpErrorService.handleError(error, 'registerUser'),
+			error => this.httpErrorService.handleError(error, 'registerUser', undefined),
 			() => this.logger.debug('post call completed')
 		);
 	}
@@ -63,7 +63,7 @@ export class UserService {
 			payload => {
 				this.appData.updateRedirectUrl(redirectUrl + createHash(payload.data));
 			},
-			error => this.httpErrorService.handleError(error, 'registerUser'),
+			error => this.httpErrorService.handleError(error, 'registerUser', undefined),
 			() => this.logger.debug('post call completed')
 		);
 	}

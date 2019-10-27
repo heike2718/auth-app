@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MessagesService, Message, WARN, ERROR, LogService } from 'hewi-ng-lib';
+import { ClientCredentials } from '../shared/model/auth-model';
 
 @Injectable({
 	providedIn: 'root'
@@ -9,7 +10,7 @@ export class HttpErrorService {
 
 	constructor(private messagesService: MessagesService, private logger: LogService) { }
 
-	handleError(error: HttpErrorResponse, context: string) {
+	handleError(error: HttpErrorResponse, context: string, clientCredentials: ClientCredentials) {
 
 		if (error instanceof ErrorEvent) {
 			this.logger.error(context + ': ErrorEvent occured - ' + JSON.stringify(error));
@@ -19,15 +20,28 @@ export class HttpErrorService {
 				case 0:
 					this.messagesService.error('Der Server ist nicht erreichbar.');
 					break;
-				default:
-					this.logger.error(context + ': Servererror status=' + error.status);
-					const msg = this.extractMessageObject(error);
-					if (msg !== null) {
-						this.showServerResponseMessage(msg);
+				case 904:
+					if (context === 'getClient' && clientCredentials) {
+						if (clientCredentials.redirectUrl) {
+							window.location.href = clientCredentials.redirectUrl;
+						}
 					} else {
-						this.messagesService.error('Es ist ein unerwarteter Fehler aufgetreten. Bitte senden Sie eine Mail an mathe@egladil.de');
+						this.handleTheError(error, context);
 					}
+					break;
+				default:
+					this.handleTheError(error, context);
 			}
+		}
+	}
+
+	private handleTheError(error: HttpErrorResponse, context: string): void {
+		this.logger.error(context + ': Servererror status=' + error.status);
+		const msg = this.extractMessageObject(error);
+		if (msg !== null) {
+			this.showServerResponseMessage(msg);
+		} else {
+			this.messagesService.error('Es ist ein unerwarteter Fehler aufgetreten. Bitte senden Sie eine Mail an mathe@egladil.de');
 		}
 	}
 
