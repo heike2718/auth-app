@@ -30,7 +30,7 @@ export class GlobalErrorHandler implements ErrorHandler {
 		}
 
 		// try sending an Error-Log to the Server
-		this.logService.error(message, 'auth-app');
+		this.logService.error(message + ' (auth-app)');
 
 		if (error instanceof HttpErrorResponse) {
 			this.logService.debug('das sollte nicht vorkommen, da diese Errors vom ChecklistenService behandelt werden');
