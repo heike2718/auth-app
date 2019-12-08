@@ -1,3 +1,8 @@
+# auth-app Release Notes
+
+
+__Release 3.3.0:__ [upgrade to hewi-ng-lib@4.0.0](https://github.com/heike2718/auth-app/issues/9)
+
 __Release 3.2.3:__ [Issue 6](https://github.com/heike2718/auth-app/issues/6)
 
 __Release 3.2.2:__ logging framework replaced by hewi-ng-lib
