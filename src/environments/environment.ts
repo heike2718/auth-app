@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  version: '3.2.4',
+  version: '3.3.0',
   envName: 'Development',
   apiUrl: 'http://localhost:9000/authprovider',
   assetsUrl: 'assets',
