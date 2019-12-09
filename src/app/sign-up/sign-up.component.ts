@@ -28,6 +28,8 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
 	private groups: string;
 
+	private nonce: string;
+
 	signUpForm: FormGroup;
 
 	agbGelesen: AbstractControl;
@@ -135,7 +137,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
 	private loadClientInformation() {
 
 		this.redirectSubscription = this.route.queryParams.pipe(
-			filter(params => params.clientId || params.redirectUrl)
+			filter(params => params.clientId || params.redirectUrl || params.nonce || params.groups)
 		).subscribe(
 			params => {
 				this.clientCredentials = {
@@ -143,6 +145,9 @@ export class SignUpComponent implements OnInit, OnDestroy {
 					redirectUrl: params.redirectUrl,
 					state: params.state
 				};
+				if (params.nonce) {
+					this.nonce = params.nonce;
+				}
 				if (params.groups) {
 					this.groups = params.groups + ',STANDARD';
 				} else {
@@ -172,6 +177,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
 			vorname: this.vorname ? this.vorname.value.trim() : null,
 			nachname: this.nachname ? this.nachname.value.trim() : null,
 			groups: this.groups,
+			nonce: this.nonce,
 			// wenn man den loginnamen nicht setzen kann, wird die Mailadresse verwendet.
 			loginName: this.loginName ? this.loginName.value.trim() : this.email.value.trim(),
 			twoPasswords: twoPasswords

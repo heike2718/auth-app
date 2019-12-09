@@ -40,6 +40,7 @@ export interface RegistrationCredentials {
 	vorname?: string;
 	nachname?: string;
 	groups?: string;
+	nonce?: string;
 	agbGelesen: boolean;
 	twoPasswords: TwoPasswords;
 	kleber: string;
