@@ -33,7 +33,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
 	private groups: string;
 
-	private nonce: string;
+	private nonce = '';
 
 	signUpForm: FormGroup;
 

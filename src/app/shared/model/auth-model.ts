@@ -34,6 +34,7 @@ export interface AuthorizationCredentials {
 export interface LoginCredentials {
 	authorizationCredentials: AuthorizationCredentials;
 	clientCredentials: ClientCredentials;
+	nonce: string;
 }
 
 
