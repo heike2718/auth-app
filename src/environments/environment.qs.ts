@@ -7,6 +7,7 @@ export const environment = {
 	version: '3.3.0',
 	envName: 'Test',
 	apiUrl: 'http://localhost:9000/authprovider',
+	profilUrl: 'http://localhost:4200',
 	assetsUrl: 'auth-app/assets',
 	consoleLogActive: true,
 	serverLogActive: true,
