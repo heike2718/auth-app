@@ -34,12 +34,12 @@ export const routerConfig: Routes = [
 	{
 		path: '',
 		pathMatch: 'full',
-		redirectTo: '/'
+		redirectTo: 'home'
 	},
 	{
 		path: '**',
 		pathMatch: 'full',
-		redirectTo: '/'
+		redirectTo: 'home'
 	}
 ];
 

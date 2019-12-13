@@ -18,6 +18,7 @@ import { HewiNgLibModule } from 'hewi-ng-lib';
 import { TempPasswordComponent } from './temp-password/temp-password.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { HomeComponent } from './home/home.component';
+import { AuthInterceptor } from './services/auth.interceptor';
 
 @NgModule({
 	declarations: [
@@ -42,7 +43,12 @@ import { HomeComponent } from './home/home.component';
 	],
 	providers: [
 		GlobalErrorHandler,
-		{ provide: ErrorHandler, useClass: GlobalErrorHandler }
+		{ provide: ErrorHandler, useClass: GlobalErrorHandler },
+		{
+			provide: HTTP_INTERCEPTORS,
+			useClass: AuthInterceptor,
+			multi: true
+		},
 	],
 	bootstrap: [AppComponent]
 })

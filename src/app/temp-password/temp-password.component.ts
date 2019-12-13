@@ -7,8 +7,11 @@ import { emailValidator, passwortValidator, passwortPasswortWiederholtValidator 
 import { AppConstants } from '../shared/app.constants';
 import { TempPasswordService } from '../services/temp-password.service';
 import { HttpErrorService } from '../error/http-error.service';
-import { MessagesService, LogService } from 'hewi-ng-lib';
-import { ChangeTempPasswordPayload, ClientInformation, TwoPasswords } from '../shared/model/auth-model';
+import { MessagesService, LogService, ResponsePayload } from 'hewi-ng-lib';
+import { ChangeTempPasswordPayload, ClientInformation, TwoPasswords, AuthSession } from '../shared/model/auth-model';
+import { AuthService } from '../services/auth.service';
+import { SessionService } from '../services/session.service';
+import { AppData } from '../shared/app-data.service';
 
 @Component({
 	selector: 'auth-temp-password',
@@ -20,6 +23,10 @@ export class TempPasswordComponent implements OnInit, OnDestroy {
 	queryParams$: Observable<Params>;
 
 	private tokenId: string;
+
+	private authSessionSubscription: Subscription;
+
+	private session: AuthSession;
 
 	private clientInformation: ClientInformation;
 
@@ -48,6 +55,9 @@ export class TempPasswordComponent implements OnInit, OnDestroy {
 	constructor(private fb: FormBuilder,
 		private logger: LogService,
 		private tempPwdService: TempPasswordService,
+		private authService: AuthService,
+		private sessionService: SessionService,
+		private appData: AppData,
 		private httpErrorService: HttpErrorService,
 		private messagesService: MessagesService,
 		private route: ActivatedRoute,
@@ -77,6 +87,15 @@ export class TempPasswordComponent implements OnInit, OnDestroy {
 
 		this.queryParams$ = this.route.queryParams;
 
+		this.authService.createAnonymousSession().subscribe(
+			(respPayload: ResponsePayload) => {
+				this.session = respPayload.data;
+				this.sessionService.setSession(this.session);
+
+			},
+			error => this.httpErrorService.handleError(error, 'createAnonymousSession', null)
+		);
+
 		this.queryParamsSubscription = this.queryParams$.pipe(
 			filter(params => params.tokenId)
 		).subscribe(
@@ -97,8 +116,10 @@ export class TempPasswordComponent implements OnInit, OnDestroy {
 		if (this.queryParamsSubscription) {
 			this.queryParamsSubscription.unsubscribe();
 		}
+		if (this.authSessionSubscription) {
+			this.authSessionSubscription.unsubscribe();
+		}
 	}
-
 
 	submit() {
 
@@ -111,20 +132,21 @@ export class TempPasswordComponent implements OnInit, OnDestroy {
 		};
 
 		const credentials: ChangeTempPasswordPayload = {
-			'tokenId': this.tokenId,
-			'tempPassword': _tempPassword,
-			'email': _email,
-			'twoPasswords': _twoPasswords
+			tokenId: this.tokenId,
+			tempPassword: _tempPassword,
+			email: _email,
+			twoPasswords: _twoPasswords
 
 		};
 
-		const response$ = this.tempPwdService.changeTempPassword(credentials);
+		const response$ = this.tempPwdService.changeTempPassword(credentials, this.session);
 
 		response$.subscribe(
 			payload => {
 				const level = payload.message.level;
 
 				if (level === 'INFO') {
+					this.sessionService.clearSession();
 					this.showChangePasswordResult = true;
 					if (payload.data) {
 						this.clientInformation = payload.data;
