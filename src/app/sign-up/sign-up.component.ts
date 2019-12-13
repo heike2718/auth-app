@@ -5,13 +5,16 @@ import { AppConstants } from '../shared/app.constants';
 import { Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 // tslint:disable-next-line: max-line-length
-import { ClientInformation, ClientCredentials, createQueryParameters, RegistrationCredentials, TwoPasswords } from '../shared/model/auth-model';
+import { ClientInformation, ClientCredentials, createQueryParameters, RegistrationCredentials, TwoPasswords, AuthSession } from '../shared/model/auth-model';
 import { ClientService } from '../services/client.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { UserService } from '../services/user.service';
 import { AppData } from '../shared/app-data.service';
-import { MessagesService, LogService } from 'hewi-ng-lib';
+import { MessagesService, LogService, ResponsePayload } from 'hewi-ng-lib';
+import { SessionService } from '../services/session.service';
+import { AuthService } from '../services/auth.service';
+import { HttpErrorService } from '../error/http-error.service';
 
 @Component({
 	selector: 'auth-sign-up',
@@ -24,9 +27,13 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
 	redirectUrl$: Observable<string>;
 
+	private session: AuthSession;
+
 	private clientCredentials: ClientCredentials;
 
 	private groups: string;
+
+	private nonce: string;
 
 	signUpForm: FormGroup;
 
@@ -63,7 +70,10 @@ export class SignUpComponent implements OnInit, OnDestroy {
 	constructor(private fb: FormBuilder,
 		private clientService: ClientService,
 		private userService: UserService,
+		private authService: AuthService,
+		private sessionService: SessionService,
 		private appData: AppData,
+		private httpErrorService: HttpErrorService,
 		private messagesService: MessagesService,
 		private logger: LogService,
 		private router: Router,
@@ -101,6 +111,15 @@ export class SignUpComponent implements OnInit, OnDestroy {
 			}
 		);
 
+		this.authService.createAnonymousSession().subscribe(
+			(respPayload: ResponsePayload) => {
+				this.session = respPayload.data;
+				this.sessionService.setSession(this.session);
+
+			},
+			error => this.httpErrorService.handleError(error, 'createAnonymousSession', null)
+		);
+
 		this.clientInfoSubscription = this.clientInformation$.subscribe(
 			info => {
 				if (info.loginnameSupported) {
@@ -135,7 +154,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
 	private loadClientInformation() {
 
 		this.redirectSubscription = this.route.queryParams.pipe(
-			filter(params => params.clientId || params.redirectUrl)
+			filter(params => params.clientId || params.redirectUrl || params.nonce || params.groups)
 		).subscribe(
 			params => {
 				this.clientCredentials = {
@@ -143,6 +162,9 @@ export class SignUpComponent implements OnInit, OnDestroy {
 					redirectUrl: params.redirectUrl,
 					state: params.state
 				};
+				if (params.nonce) {
+					this.nonce = params.nonce;
+				}
 				if (params.groups) {
 					this.groups = params.groups + ',STANDARD';
 				} else {
@@ -172,6 +194,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
 			vorname: this.vorname ? this.vorname.value.trim() : null,
 			nachname: this.nachname ? this.nachname.value.trim() : null,
 			groups: this.groups,
+			nonce: this.nonce,
 			// wenn man den loginnamen nicht setzen kann, wird die Mailadresse verwendet.
 			loginName: this.loginName ? this.loginName.value.trim() : this.email.value.trim(),
 			twoPasswords: twoPasswords
@@ -179,7 +202,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
 		this.logger.debug(JSON.stringify(registrationCredentials));
 
-		this.userService.registerUser(registrationCredentials);
+		this.userService.registerUser(registrationCredentials, this.session);
 	}
 
 	gotoLogin(): void {

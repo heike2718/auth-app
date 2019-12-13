@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
 	selector: 'auth-home',
@@ -12,6 +13,12 @@ export class HomeComponent implements OnInit {
 	constructor() { }
 
 	ngOnInit() {
+	}
+
+	redirectToProfilApp() {
+
+		const url = environment.profilUrl;
+		window.location.href = url;
 	}
 
 }

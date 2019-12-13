@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TempPasswordCredentials, ChangeTempPasswordPayload } from '../shared/model/auth-model';
+import { TempPasswordCredentials, ChangeTempPasswordPayload, AuthSession } from '../shared/model/auth-model';
 import { map, publishLast, refCount, tap } from 'rxjs/operators';
 import { ResponsePayload, LogService } from 'hewi-ng-lib';
 import { HttpClient } from '@angular/common/http';
@@ -17,11 +17,11 @@ export class TempPasswordService {
 	constructor(private http: HttpClient
 		, private logger: LogService) { }
 
-	orderTempPassword(tempPasswordCredentials: TempPasswordCredentials): Observable<ResponsePayload> {
+	orderTempPassword(tempPasswordCredentials: TempPasswordCredentials, session: AuthSession): Observable<ResponsePayload> {
 
 		this.logger.debug('orderTempPassword: start');
 
-		return this.http.post(this.url, tempPasswordCredentials).pipe(
+		return this.http.post(this.url, tempPasswordCredentials, { headers: { 'X-XSRF-TOKEN': session.csrfToken } }).pipe(
 			map(res => <ResponsePayload>res),
 			publishLast(),
 			refCount(),
@@ -31,12 +31,12 @@ export class TempPasswordService {
 		);
 	}
 
-	changeTempPassword(changeTempPasswordPayload: ChangeTempPasswordPayload): Observable<ResponsePayload> {
+	changeTempPassword(changeTempPasswordPayload: ChangeTempPasswordPayload, session: AuthSession): Observable<ResponsePayload> {
 
 
 		this.logger.debug('changeTempPasswordPayload: start');
 
-		return this.http.put(this.url, changeTempPasswordPayload).pipe(
+		return this.http.put(this.url, changeTempPasswordPayload, { headers: { 'X-XSRF-TOKEN': session.csrfToken } }).pipe(
 			map(res => <ResponsePayload>res),
 			publishLast(),
 			refCount(),

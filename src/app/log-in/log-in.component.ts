@@ -2,15 +2,18 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, AbstractControl, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { ClientInformation, ClientCredentials, LoginCredentials, AuthorizationCredentials } from '../shared/model/auth-model';
+import { ClientInformation, ClientCredentials, LoginCredentials, AuthorizationCredentials, AuthSession } from '../shared/model/auth-model';
 import { createQueryParameters } from '../shared/model/auth-model';
 import { ClientService } from '../services/client.service';
 import { UserService } from '../services/user.service';
 import { AppData } from '../shared/app-data.service';
-import { MessagesService, LogService } from 'hewi-ng-lib';
+import { MessagesService, LogService, ResponsePayload } from 'hewi-ng-lib';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { passwortValidator } from '../shared/validation/app.validators';
+import { AuthService } from '../services/auth.service';
+import { SessionService } from '../services/session.service';
+import { HttpErrorService } from '../error/http-error.service';
 
 @Component({
 	selector: 'auth-log-in',
@@ -22,6 +25,8 @@ export class LogInComponent implements OnInit, OnDestroy {
 	clientInformation$: Observable<ClientInformation>;
 
 	redirectUrl$: Observable<string>;
+
+	private session: AuthSession;
 
 	private clientCredentials: ClientCredentials;
 
@@ -43,7 +48,10 @@ export class LogInComponent implements OnInit, OnDestroy {
 	constructor(private fb: FormBuilder,
 		private clientService: ClientService,
 		private userService: UserService,
+		private authService: AuthService,
+		private sessionService: SessionService,
 		private appData: AppData,
+		private httpErrorService: HttpErrorService,
 		private messagesService: MessagesService,
 		private logger: LogService,
 		private router: Router,
@@ -78,6 +86,15 @@ export class LogInComponent implements OnInit, OnDestroy {
 			}
 		);
 
+		this.authService.createAnonymousSession().subscribe(
+			(respPayload: ResponsePayload) => {
+				this.session = respPayload.data;
+				this.sessionService.setSession(this.session);
+
+			},
+			error => this.httpErrorService.handleError(error, 'createAnonymousSession', null)
+		);
+
 	}
 
 	ngOnDestroy() {
@@ -99,6 +116,7 @@ export class LogInComponent implements OnInit, OnDestroy {
 				};
 				this.appData.updateClientCredentials(this.clientCredentials);
 				this.clientService.getClient(this.clientCredentials);
+				this.authService.createAnonymousSession();
 			}
 		);
 	}
@@ -121,7 +139,7 @@ export class LogInComponent implements OnInit, OnDestroy {
 
 		this.logger.debug(JSON.stringify(loginCredentials));
 
-		this.userService.loginUser(loginCredentials);
+		this.userService.loginUser(loginCredentials, this.session);
 	}
 
 	gotoOrderTempPwd(): void {

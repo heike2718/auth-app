@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ClientInformation, ClientCredentials } from './model/auth-model';
+// tslint:disable-next-line:max-line-length
+import { ClientInformation, ClientCredentials, AuthSession, STORAGE_KEY_SESSION_EXPIRES_AT, STORAGE_KEY_DEV_SESSION_ID } from './model/auth-model';
 import { filter } from 'rxjs/operators';
 import * as _ from 'lodash';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
 	providedIn: 'root'
@@ -31,7 +33,6 @@ export class AppData {
 		this.clientCredentialsSubject.asObservable().pipe(filter(_subj => !!undefined));
 
 	redirectUrl$: Observable<string> = this.redirectUrlSubject.asObservable();
-
 
 	constructor() { }
 
