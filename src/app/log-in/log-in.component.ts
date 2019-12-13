@@ -44,6 +44,8 @@ export class LogInComponent implements OnInit, OnDestroy {
 
 	private redirectSubscription: Subscription;
 
+	private nonce = '';
+
 
 	constructor(private fb: FormBuilder,
 		private clientService: ClientService,
@@ -114,6 +116,9 @@ export class LogInComponent implements OnInit, OnDestroy {
 					redirectUrl: params.redirectUrl,
 					state: params.state
 				};
+				if (params.nonce) {
+					this.nonce = params.nonce;
+				}
 				this.appData.updateClientCredentials(this.clientCredentials);
 				this.clientService.getClient(this.clientCredentials);
 				this.authService.createAnonymousSession();
@@ -135,6 +140,7 @@ export class LogInComponent implements OnInit, OnDestroy {
 		const loginCredentials: LoginCredentials = {
 			authorizationCredentials: authCredentials,
 			clientCredentials: this.clientCredentials,
+			nonce: this.nonce
 		};
 
 		this.logger.debug(JSON.stringify(loginCredentials));
