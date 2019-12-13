@@ -1,10 +1,14 @@
 # auth-app Release Notes
 
+__Release 3.3.2:__
+
+[Weniger Query-Parameter in redirect url](https://github.com/heike2718/auth-app/issues/18)
+
 __Release 3.3.1:__
 
-[issue 8](https://github.com/heike2718/auth-app/issues/8)
+[Add XSRF Protection](https://github.com/heike2718/auth-app/issues/8)
 
-[issue 16](https://github.com/heike2718/auth-app/issues/16)
+[Link zur Profilapp auf auth-app/home](https://github.com/heike2718/auth-app/issues/16)
 
 __Release 3.3.0:__
 
@@ -12,7 +16,7 @@ __Release 3.3.0:__
 
 __Release 3.2.3:__
 
-[Issue 6](https://github.com/heike2718/auth-app/issues/6)
+[Festhängen mit 401 nach Verwendung des Back-Buttons](https://github.com/heike2718/auth-app/issues/6)
 
 __Release 3.2.2:__
 
