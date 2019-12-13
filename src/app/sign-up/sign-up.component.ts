@@ -5,13 +5,16 @@ import { AppConstants } from '../shared/app.constants';
 import { Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 // tslint:disable-next-line: max-line-length
-import { ClientInformation, ClientCredentials, createQueryParameters, RegistrationCredentials, TwoPasswords } from '../shared/model/auth-model';
+import { ClientInformation, ClientCredentials, createQueryParameters, RegistrationCredentials, TwoPasswords, AuthSession } from '../shared/model/auth-model';
 import { ClientService } from '../services/client.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { UserService } from '../services/user.service';
 import { AppData } from '../shared/app-data.service';
-import { MessagesService, LogService } from 'hewi-ng-lib';
+import { MessagesService, LogService, ResponsePayload } from 'hewi-ng-lib';
+import { SessionService } from '../services/session.service';
+import { AuthService } from '../services/auth.service';
+import { HttpErrorService } from '../error/http-error.service';
 
 @Component({
 	selector: 'auth-sign-up',
@@ -23,6 +26,8 @@ export class SignUpComponent implements OnInit, OnDestroy {
 	clientInformation$: Observable<ClientInformation>;
 
 	redirectUrl$: Observable<string>;
+
+	private session: AuthSession;
 
 	private clientCredentials: ClientCredentials;
 
@@ -65,7 +70,10 @@ export class SignUpComponent implements OnInit, OnDestroy {
 	constructor(private fb: FormBuilder,
 		private clientService: ClientService,
 		private userService: UserService,
+		private authService: AuthService,
+		private sessionService: SessionService,
 		private appData: AppData,
+		private httpErrorService: HttpErrorService,
 		private messagesService: MessagesService,
 		private logger: LogService,
 		private router: Router,
@@ -101,6 +109,15 @@ export class SignUpComponent implements OnInit, OnDestroy {
 				this.redirectUrl = str;
 				this.sendRedirect();
 			}
+		);
+
+		this.authService.createAnonymousSession().subscribe(
+			(respPayload: ResponsePayload) => {
+				this.session = respPayload.data;
+				this.sessionService.setSession(this.session);
+
+			},
+			error => this.httpErrorService.handleError(error, 'createAnonymousSession', null)
 		);
 
 		this.clientInfoSubscription = this.clientInformation$.subscribe(
@@ -185,7 +202,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
 		this.logger.debug(JSON.stringify(registrationCredentials));
 
-		this.userService.registerUser(registrationCredentials);
+		this.userService.registerUser(registrationCredentials, this.session);
 	}
 
 	gotoLogin(): void {

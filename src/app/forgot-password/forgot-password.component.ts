@@ -1,18 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, AbstractControl, Validators } from '@angular/forms';
-import { TempPasswordCredentials, ClientCredentials } from '../shared/model/auth-model';
+import { TempPasswordCredentials, ClientCredentials, AuthSession } from '../shared/model/auth-model';
 import { TempPasswordService } from '../services/temp-password.service';
 import { HttpErrorService } from '../error/http-error.service';
-import { MessagesService, LogService } from 'hewi-ng-lib';
+import { MessagesService, LogService, ResponsePayload } from 'hewi-ng-lib';
 import { AppData } from '../shared/app-data.service';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
+import { SessionService } from '../services/session.service';
+import { Subscription } from 'rxjs';
 
 @Component({
 	selector: 'auth-forgot-password',
 	templateUrl: './forgot-password.component.html',
 	styleUrls: ['./forgot-password.component.css']
 })
-export class ForgotPasswordComponent implements OnInit {
+export class ForgotPasswordComponent implements OnInit, OnDestroy {
 
 
 	orderPwdForm: FormGroup;
@@ -25,10 +28,16 @@ export class ForgotPasswordComponent implements OnInit {
 
 	message: string;
 
+	private authSessionSubscription: Subscription;
+
+	private session: AuthSession;
+
 	private clientCredentials: ClientCredentials;
 
 	constructor(private fb: FormBuilder
 		, private tempPwdService: TempPasswordService
+		, private authService: AuthService
+		, private sessionService: SessionService
 		, private httpErrorService: HttpErrorService
 		, private messagesService: MessagesService
 		, private appData: AppData
@@ -49,8 +58,22 @@ export class ForgotPasswordComponent implements OnInit {
 
 	ngOnInit() {
 		this.clientCredentials = this.appData.clientCredentialsSubject.getValue();
+
+		this.authService.createAnonymousSession().subscribe(
+			(respPayload: ResponsePayload) => {
+				this.session = respPayload.data;
+				this.sessionService.setSession(this.session);
+
+			},
+			error => this.httpErrorService.handleError(error, 'createAnonymousSession', null)
+		);
 	}
 
+	ngOnDestroy() {
+		if (this.authSessionSubscription) {
+			this.authSessionSubscription.unsubscribe();
+		}
+	}
 
 	submit(): void {
 
@@ -63,13 +86,13 @@ export class ForgotPasswordComponent implements OnInit {
 		}
 
 		const tempPasswordCredentials: TempPasswordCredentials = {
-			'email': _email,
-			'clientCredentials': _clientCreds,
-			'kleber': _kleber
+			email: _email,
+			clientCredentials: _clientCreds,
+			kleber: _kleber
 		};
 
 		this.logger.debug(JSON.stringify(tempPasswordCredentials));
-		const response$ = this.tempPwdService.orderTempPassword(tempPasswordCredentials);
+		const response$ = this.tempPwdService.orderTempPassword(tempPasswordCredentials, this.session);
 
 		response$.subscribe(
 			payload => {
@@ -78,6 +101,7 @@ export class ForgotPasswordComponent implements OnInit {
 				if (level === 'INFO') {
 					this.showMessage = true;
 					this.message = payload.message.message;
+					this.sessionService.clearSession();
 				} else {
 					this.showMessage = false;
 					this.messagesService.error(payload.message.message);
