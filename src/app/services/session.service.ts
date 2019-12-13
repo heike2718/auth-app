@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { STORAGE_KEY_DEV_SESSION_ID, STORAGE_KEY_SESSION_EXPIRES_AT, AuthSession } from '../shared/model/auth-model';
 import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environments/environment.qs';
+import { environment } from '../../environments/environment';
 import { map, publishLast, refCount } from 'rxjs/operators';
 import { ResponsePayload } from 'hewi-ng-lib';
 

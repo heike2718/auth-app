@@ -1,6 +1,6 @@
 export const environment = {
 	production: true,
-	version: '3.3.0',
+	version: '3.3.1',
 	envName: 'Production',
 	apiUrl: 'https://opa-wetterwachs.de/authprovider',
 	profilUrl: 'https://opa-wetterwachs.de/profil-app',
