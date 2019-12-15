@@ -1,5 +1,10 @@
 # auth-app Release Notes
 
+__Release 3.4.0:__
+
+[Keinen Wechsel zwischen Login und Signup ermöglichen](https://github.com/heike2718/auth-app/issues/20)
+
+
 __Release 3.3.2:__
 
 [Weniger Query-Parameter in redirect url](https://github.com/heike2718/auth-app/issues/18)
