@@ -152,14 +152,6 @@ export class LogInComponent implements OnInit, OnDestroy {
 		this.router.navigateByUrl('password/temp/order');
 	}
 
-	gotoSignUp(): void {
-		let url = '/signup';
-		if (this.clientCredentials) {
-			url += createQueryParameters(this.clientCredentials);
-		}
-		this.router.navigateByUrl(url);
-	}
-
 	private sendRedirect() {
 		this.logger.debug('about to redirect to: ' + this.redirectUrl);
 		window.location.href = this.redirectUrl;
