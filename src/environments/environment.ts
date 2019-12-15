@@ -1,17 +1,16 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
-
 export const environment = {
-        production: false,
-        version: '3.3.2',
-        envName: 'Development',
-        apiUrl: 'http://localhost:9000/authprovider',
-        profilUrl: 'http://localhost:4200',
-        assetsUrl: 'assets',
-        consoleLogActive: true,
-        serverLogActive: false,
-        loglevel: 1
+  production: false,
+  version: '3.3.2',
+  envName: 'Development',
+  apiUrl: 'http://localhost:9000/authprovider',
+  profilUrl: 'http://localhost:4200',
+  assetsUrl: 'assets',
+  consoleLogActive: true,
+  serverLogActive: false,
+  loglevel: 1
 };
 
 /*
