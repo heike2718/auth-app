@@ -1,13 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, AbstractControl, Validators, FormControl } from '@angular/forms';
-import { emailValidator, passwortValidator, passwortPasswortWiederholtValidator } from '../shared/validation/app.validators';
+import { passwortValidator, passwortPasswortWiederholtValidator } from '../shared/validation/app.validators';
 import { AppConstants } from '../shared/app.constants';
 import { Observable, Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
-// tslint:disable-next-line: max-line-length
-import { ClientInformation, ClientCredentials, createQueryParameters, RegistrationCredentials, TwoPasswords, AuthSession } from '../shared/model/auth-model';
+import { filter, map } from 'rxjs/operators';
+import { ClientInformation, ClientCredentials, RegistrationCredentials, TwoPasswords, AuthSession } from '../shared/model/auth-model';
 import { ClientService } from '../services/client.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { UserService } from '../services/user.service';
 import { AppData } from '../shared/app-data.service';
@@ -15,6 +14,7 @@ import { MessagesService, LogService, ResponsePayload } from 'hewi-ng-lib';
 import { SessionService } from '../services/session.service';
 import { AuthService } from '../services/auth.service';
 import { HttpErrorService } from '../error/http-error.service';
+import { SignupValidationService } from '../services/signup-valitadion.service';
 
 @Component({
 	selector: 'auth-sign-up',
@@ -72,20 +72,26 @@ export class SignUpComponent implements OnInit, OnDestroy {
 		private userService: UserService,
 		private authService: AuthService,
 		private sessionService: SessionService,
+		private validationService: SignupValidationService,
 		private appData: AppData,
 		private httpErrorService: HttpErrorService,
 		private messagesService: MessagesService,
 		private logger: LogService,
-		private router: Router,
-		private route: ActivatedRoute) {
+		private route: ActivatedRoute) { }
 
-		this.signUpForm = this.fb.group({
-			'agbGelesen': [false, [Validators.requiredTrue]],
-			'email': ['', [Validators.required, emailValidator]],
-			'passwort': ['', [Validators.required, passwortValidator]],
-			'passwortWdh': ['', [Validators.required, passwortValidator]],
-			'kleber': ['']
-		}, { validator: passwortPasswortWiederholtValidator });
+	ngOnInit() {
+
+		this.signUpForm = new FormGroup({
+			'agbGelesen': new FormControl(false, { 'validators': [Validators.requiredTrue] }),
+			'email': new FormControl('', {
+				'validators': [Validators.required, Validators.email],
+				'asyncValidators': [this.forbiddenEmail.bind(this)],
+				'updateOn': 'blur'
+			}),
+			'passwort': new FormControl('', { 'validators': [Validators.required, passwortValidator] }),
+			'passwortWdh': new FormControl('', { 'validators': [Validators.required, passwortValidator] }),
+			'kleber': new FormControl(''),
+		}, { 'validators': passwortPasswortWiederholtValidator });
 
 		this.agbGelesen = this.signUpForm.controls['agbGelesen'];
 		this.email = this.signUpForm.controls['email'];
@@ -94,9 +100,8 @@ export class SignUpComponent implements OnInit, OnDestroy {
 		this.kleber = this.signUpForm['kleber'];
 		this.tooltipPasswort = AppConstants.tooltips.PASSWORTREGELN;
 		this.showClientId = !environment.production;
-	}
 
-	ngOnInit() {
+
 		this.clientInformation$ = this.appData.clientInformation$;
 		this.redirectUrl$ = this.appData.redirectUrl$;
 
@@ -124,7 +129,11 @@ export class SignUpComponent implements OnInit, OnDestroy {
 			info => {
 				if (info.loginnameSupported) {
 					this.signUpForm.addControl(
-						'loginName', new FormControl('', [Validators.required, Validators.maxLength(255)])
+						'loginName', new FormControl('', {
+							'validators': [Validators.required, Validators.maxLength(255)],
+							'asyncValidators': [this.forbiddenLoginName.bind(this)],
+							'updateOn': 'blur'
+						})
 					);
 					this.loginName = this.signUpForm.controls['loginName'];
 				}
@@ -141,6 +150,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
+
 
 	ngOnDestroy() {
 		if (this.redirectSubscription) {
@@ -208,5 +218,55 @@ export class SignUpComponent implements OnInit, OnDestroy {
 	private sendRedirect() {
 		this.logger.debug('about to redirect to: ' + this.redirectUrl);
 		window.location.href = this.redirectUrl;
+	}
+
+	forbiddenEmail(control: FormControl): Promise<any> | Observable<any> {
+		const promise = new Promise<any>((resolve, reject) => {
+			const email = control.value;
+
+			this.validationService.validate('email', email, this.session).pipe(
+				map(res => <ResponsePayload>res)
+			).subscribe(
+				payload => {
+					const messagePayload = payload.message;
+
+					if ('ERROR' === messagePayload.level) {
+						resolve({ 'emailKnown': true });
+					} else {
+						resolve(null);
+					}
+				},
+				error => {
+					this.logger.debug(error);
+					resolve(null);
+				}
+			);
+		});
+		return promise;
+	}
+
+	forbiddenLoginName(control: FormControl): Promise<any> | Observable<any> {
+		const promise = new Promise<any>((resolve, reject) => {
+			const loginName = control.value;
+
+			this.validationService.validate('loginname', loginName, this.session).pipe(
+				map(res => <ResponsePayload>res)
+			).subscribe(
+				payload => {
+					const messagePayload = payload.message;
+
+					if ('ERROR' === messagePayload.level) {
+						resolve({ 'loginNameKnown': true });
+					} else {
+						resolve(null);
+					}
+				},
+				error => {
+					this.logger.debug(error);
+					resolve(null);
+				}
+			);
+		});
+		return promise;
 	}
 }

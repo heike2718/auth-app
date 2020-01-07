@@ -1,16 +1,6 @@
-import { AbstractControl, FormGroup, FormControl } from '@angular/forms';
+import { AbstractControl, FormGroup, FormControl, AsyncValidatorFn } from '@angular/forms';
+import { Subject, Observable, Observer } from 'rxjs';
 
-export function emailValidator(control: any): {
-	[key: string]: any
-} {
-	const re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
-
-	if (!control.value || control.value === '' || re.test(control.value)) {
-		return null;
-	} else {
-		return { 'invalidEMail': true };
-	}
-}
 export function passwortValidator(control: any): {
 	[key: string]: any
 } {
@@ -24,33 +14,8 @@ export function passwortValidator(control: any): {
 	}
 }
 
-export function einmalPasswordValidator(control: any): {
-	[key: string]: any
-} {
-	const re = /[a-zA-Z0-9\-]*/;
-
-	if (!control.value || control.value === '' || re.test(control.value)) {
-		return null;
-	} else {
-		return { 'invalidEinmalPassword': true };
-	}
-}
-
 function hasPasswortPasswortWdhError(passwort1: string, passwort2: string): boolean {
 	if (passwort1 !== undefined && passwort2 !== undefined && passwort1 !== '' && passwort2 !== '' && passwort1 !== passwort2) {
-		return true;
-	}
-	return false;
-}
-
-function hasAttributeAttributeWdhEqualError(attr1: string, attr2: string): boolean {
-	if (attr1 === undefined && attr2 === undefined) {
-		return true;
-	}
-	if (attr1 === '' && attr2 === '') {
-		return true;
-	}
-	if (attr1 !== undefined && attr1 !== '' && attr2 !== undefined && attr2 !== '' && attr1 === attr2) {
 		return true;
 	}
 	return false;
@@ -89,23 +54,6 @@ export function passwortPasswortWiederholtValidator(formGroup: AbstractControl):
 	}
 }
 
-export function emailEmailNeuValidator(formGroup: AbstractControl): {
-	[key: string]: any
-} {
-	const email1Control = formGroup.get('username');
-	const email2Control = formGroup.get('email');
-
-	if (!email1Control || !email2Control) {
-		return null;
-	}
-	const attr1 = email1Control.value;
-	const attr2 = email2Control.value;
-
-	if (hasAttributeAttributeWdhEqualError(attr1, attr2)) {
-		return { 'attributeAttributeWdhEqual': true };
-	}
-}
-
 export function validateAllFormFields(formGroup: FormGroup): void {
 	Object.keys(formGroup.controls).forEach(field => {
 		const control = formGroup.get(field);
@@ -116,4 +64,3 @@ export function validateAllFormFields(formGroup: FormGroup): void {
 		}
 	});
 }
-
