@@ -221,51 +221,61 @@ export class SignUpComponent implements OnInit, OnDestroy {
 	}
 
 	forbiddenEmail(control: FormControl): Promise<any> | Observable<any> {
-		const promise = new Promise<any>((resolve, reject) => {
+		const promise = new Promise<any>((resolve, _reject) => {
 			const email = control.value;
 
-			this.validationService.validate('email', email, this.session).pipe(
-				map(res => <ResponsePayload>res)
-			).subscribe(
-				payload => {
-					const messagePayload = payload.message;
+			if (this.session.csrfToken && this.session.csrfToken.length > 0) {
 
-					if ('ERROR' === messagePayload.level) {
-						resolve({ 'emailKnown': true });
-					} else {
+				this.validationService.validate('email', email, this.session).pipe(
+					map(res => <ResponsePayload>res)
+				).subscribe(
+					payload => {
+						const messagePayload = payload.message;
+
+						if ('ERROR' === messagePayload.level) {
+							resolve({ 'emailKnown': true });
+						} else {
+							resolve(null);
+						}
+					},
+					error => {
+						this.logger.debug(error);
 						resolve(null);
 					}
-				},
-				error => {
-					this.logger.debug(error);
-					resolve(null);
-				}
-			);
+				);
+			} else {
+				resolve(null);
+			}
 		});
 		return promise;
 	}
 
 	forbiddenLoginName(control: FormControl): Promise<any> | Observable<any> {
-		const promise = new Promise<any>((resolve, reject) => {
+		const promise = new Promise<any>((resolve, _reject) => {
 			const loginName = control.value;
 
-			this.validationService.validate('loginname', loginName, this.session).pipe(
-				map(res => <ResponsePayload>res)
-			).subscribe(
-				payload => {
-					const messagePayload = payload.message;
+			if (this.session.csrfToken && this.session.csrfToken.length > 0) {
 
-					if ('ERROR' === messagePayload.level) {
-						resolve({ 'loginNameKnown': true });
-					} else {
+				this.validationService.validate('loginname', loginName, this.session).pipe(
+					map(res => <ResponsePayload>res)
+				).subscribe(
+					payload => {
+						const messagePayload = payload.message;
+
+						if ('ERROR' === messagePayload.level) {
+							resolve({ 'loginNameKnown': true });
+						} else {
+							resolve(null);
+						}
+					},
+					error => {
+						this.logger.debug(error);
 						resolve(null);
 					}
-				},
-				error => {
-					this.logger.debug(error);
-					resolve(null);
-				}
-			);
+				);
+			} else {
+				resolve(null);
+			}
 		});
 		return promise;
 	}
