@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, AbstractControl, Validators } from '@angular/fo
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { emailValidator, passwortValidator, passwortPasswortWiederholtValidator } from '../shared/validation/app.validators';
+import { passwortValidator, passwortPasswortWiederholtValidator } from '../shared/validation/app.validators';
 import { AppConstants } from '../shared/app.constants';
 import { TempPasswordService } from '../services/temp-password.service';
 import { HttpErrorService } from '../error/http-error.service';
@@ -57,7 +57,6 @@ export class TempPasswordComponent implements OnInit, OnDestroy {
 		private tempPwdService: TempPasswordService,
 		private authService: AuthService,
 		private sessionService: SessionService,
-		private appData: AppData,
 		private httpErrorService: HttpErrorService,
 		private messagesService: MessagesService,
 		private route: ActivatedRoute,
@@ -71,7 +70,7 @@ export class TempPasswordComponent implements OnInit, OnDestroy {
 		this.zurueckText = 'zurück';
 
 		this.changePwdForm = this.fb.group({
-			'email': ['', [Validators.required, emailValidator]],
+			'email': ['', [Validators.required, Validators.email]],
 			'tempPassword': ['', [Validators.required]],
 			'passwort': ['', [Validators.required, passwortValidator]],
 			'passwortWdh': ['', [Validators.required, passwortValidator]]

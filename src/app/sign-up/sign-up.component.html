@@ -4,13 +4,13 @@
 
 		<p>Minikänguru-Konto anlegen und {{clientInfo.zurueckText}}</p>
 
-		<form novalidate [formGroup]="signUpForm">
+		<form [formGroup]="signUpForm" (ngSubmit)="submitUser()">
 
 			<div class="form-check">
 				<div class="row">
 					<div class="col-md-12">
 						<input type="checkbox" class="form-check-input" id="agbCheck" formControlName="agbGelesen">
-						<label [class.error]="agbGelesen.touched && !agbGelesen.touched">*Ich habe die Datenschutzerkl&auml;rung
+						<label [class.error]="agbGelesen.touched && !agbGelesen.valid">*Ich habe die Datenschutzerkl&auml;rung
 							gelesen und willige ein.
 						</label>
 					</div>
@@ -126,7 +126,7 @@
 
 			<div class="row">
 				<div class="col-md-2 btn-wrapper">
-					<button class="col-md-12 btn btn-primary" (click)="submitUser()"
+					<button class="col-md-12 btn btn-primary"
 						[disabled]="!signUpForm.valid || submitDisabled">
 						registrieren
 					</button>
