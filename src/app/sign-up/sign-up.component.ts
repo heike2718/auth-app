@@ -84,9 +84,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
 		this.signUpForm = new FormGroup({
 			'agbGelesen': new FormControl(false, { 'validators': [Validators.requiredTrue] }),
 			'email': new FormControl('', {
-				'validators': [Validators.required, Validators.email],
-				'asyncValidators': [this.forbiddenEmail.bind(this)],
-				'updateOn': 'blur'
+				'validators': [Validators.required, Validators.email]
 			}),
 			'passwort': new FormControl('', { 'validators': [Validators.required, passwortValidator] }),
 			'passwortWdh': new FormControl('', { 'validators': [Validators.required, passwortValidator] }),
@@ -220,35 +218,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
 		window.location.href = this.redirectUrl;
 	}
 
-	forbiddenEmail(control: FormControl): Promise<any> | Observable<any> {
-		const promise = new Promise<any>((resolve, _reject) => {
-			const email = control.value;
 
-			if (this.session.csrfToken && this.session.csrfToken.length > 0) {
-
-				this.validationService.validate('email', email, this.session).pipe(
-					map(res => <ResponsePayload>res)
-				).subscribe(
-					payload => {
-						const messagePayload = payload.message;
-
-						if ('ERROR' === messagePayload.level) {
-							resolve({ 'emailKnown': true });
-						} else {
-							resolve(null);
-						}
-					},
-					error => {
-						this.logger.debug(error);
-						resolve(null);
-					}
-				);
-			} else {
-				resolve(null);
-			}
-		});
-		return promise;
-	}
 
 	forbiddenLoginName(control: FormControl): Promise<any> | Observable<any> {
 		const promise = new Promise<any>((resolve, _reject) => {
