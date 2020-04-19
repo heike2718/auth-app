@@ -1,5 +1,9 @@
 # auth-app Release Notes
 
+__Release 4.0.0:__
+
+update to angular 9
+
 __Release 3.4.0:__
 
 [Keinen Wechsel zwischen Login und Signup ermöglichen](https://github.com/heike2718/auth-app/issues/20)
