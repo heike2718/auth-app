@@ -3,10 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 export const environment = {
   production: false,
-  version: '4.0.0',
+  version: '5.0.1',
   envName: 'Development',
-  apiUrl: 'http://localhost:9000/authprovider',
-  profilUrl: 'http://localhost:4200',
+  apiUrl: 'http://192.168.10.176:9000/authprovider',
+  profilUrl: 'http://192.168.10.176:4200',
   assetsUrl: 'assets',
   consoleLogActive: true,
   serverLogActive: false,

@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, AbstractControl, Validators } from '@angular/fo
 import { Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { ClientInformation, ClientCredentials, LoginCredentials, AuthorizationCredentials, AuthSession } from '../shared/model/auth-model';
-import { createQueryParameters } from '../shared/model/auth-model';
 import { ClientService } from '../services/client.service';
 import { UserService } from '../services/user.service';
 import { AppData } from '../shared/app-data.service';

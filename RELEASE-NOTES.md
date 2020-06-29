@@ -1,5 +1,9 @@
 # auth-app Release Notes
 
+__Release 5.0.1:__
+
+[keine remote Mailvalidierung](https://github.com/heike2718/auth-app/issues/26)
+
 __Release 4.0.0:__
 
 update to angular 9
