@@ -4,7 +4,7 @@
 
 export const environment = {
 	production: false,
-	version: '5.0.1',
+	version: '5.0.2',
 	envName: 'Test',
 	apiUrl: 'http://192.168.10.176:9000/authprovider',
 	profilUrl: 'http://localhost:4200',

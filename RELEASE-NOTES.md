@@ -1,5 +1,9 @@
 # auth-app Release Notes
 
+__Release 5.0.2:__
+
+fix npm audit hints
+
 __Release 5.0.1:__
 
 [keine remote Mailvalidierung](https://github.com/heike2718/auth-app/issues/26)
