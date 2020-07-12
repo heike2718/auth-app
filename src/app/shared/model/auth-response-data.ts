@@ -4,9 +4,10 @@ export interface User {
 }
 
 export interface SignUpLogInResponseData {
-	state: string;
-	nonce?: string;
-	idToken: string;
+	readonly state: string;
+	readonly nonce?: string;
+	readonly idToken: string;
+	readonly oauthFlowType: string;
 }
 
 
@@ -16,6 +17,7 @@ export function createHash(data: SignUpLogInResponseData): string {
 
 	return '#state=' + data.state
 		+ '&nonce=' + nonce
-		+ '&idToken=' + data.idToken;
+		+ '&idToken=' + data.idToken
+		+ '&oauthFlowType=' + data.oauthFlowType;
 }
 
