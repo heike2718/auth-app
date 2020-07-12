@@ -52,7 +52,8 @@ export class UserService {
 
 		this.logger.debug('loginUser: start');
 
-		const url = environment.apiUrl + '/auth/sessions';
+		// const url = environment.apiUrl + '/auth/sessions';
+		const url = environment.apiUrl + '/auth/sessions/auth-token-grant';
 
 		// Bei Erfolg: ReponsePayload mit INFO-Message
 		const redirectUrl = loginCredentials.clientCredentials.redirectUrl;
